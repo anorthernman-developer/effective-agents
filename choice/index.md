@@ -4,7 +4,7 @@
 
 Before you build another agent, **understand the work**. Map how work gets done, by whom, and which tasks move value — then work backwards to decide what to **augment**, **automate**, or **leave be**.
 
-![Work-map fork: augment, automate, or leave be](../assets/img/choice-hero.png)
+![Work-map fork: augment, automate, or leave be](../assets/img/sections/choice-hero.png)
 
 A related perspective on organisational understanding as a discipline sits at [organisationalunderstanding.com](https://organisationalunderstanding.com). Effective Agents offers a concrete method tuned to Microsoft 365 agents and Copilot programmes.
 
@@ -33,7 +33,7 @@ Work **backwards from the done state**. Ask:
 
 ### 4. Choose the intervention
 
-![Three abstract paths: augment, automate, or leave be](../assets/img/choice-section.png)
+![Three abstract paths: augment, automate, or leave be](../assets/img/sections/choice-triage.png)
 
 | Choice | When | Typical Microsoft shape |
 |--------|------|-------------------------|

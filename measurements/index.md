@@ -4,7 +4,7 @@
 
 Board-ready measurement for AI and agents: **decision-first packs**, value beyond P&L, balanced lenses, one measurement chain, risk beside performance, evidence gates, a 90-day operating model, and anti-gaming discipline.
 
-![Abstract board pack and scorecard frames](../assets/img/measurements-hero.png)
+![Abstract board pack and scorecard frames](../assets/img/sections/measurements-hero.png)
 
 This page is an Effective Agents synthesis for Microsoft-centric estates. It attributes well-known frames by name (Balanced Scorecard thinking, NIST AI RMF concepts, DORA-style caution about metric theatre) without lifting third-party blueprints.
 
@@ -57,7 +57,7 @@ Unbalanced packs create local optima (e.g. maximising prompts while quality coll
 
 ## One measurement chain
 
-![Measurement chain linking intent to decision pack with risk beside performance](../assets/img/measurements-section.png)
+![Measurement chain linking intent to decision pack with risk beside performance](../assets/img/sections/measurements-chain.png)
 
 Keep a single spine from telemetry to board story:
 

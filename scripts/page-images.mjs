@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const OUT_DIR = path.join(ROOT, 'assets', 'img');
+const OUT_DIR = path.join(ROOT, 'assets', 'img', 'sections');
 
 const GEMINI_IMAGE_MODELS = [
   'gemini-2.5-flash-image',
@@ -24,7 +24,7 @@ const IMAGES = [
       'Abstract agents finishing real work: geometric workers closing loops and filing completed artefacts, outcomes over chat theatre, finished stacks not speech bubbles',
   },
   {
-    name: 'our-goal-section',
+    name: 'our-goal-intent',
     subject:
       'Feedback loop and preference signals: human corrections flowing into agent improvement cycles, thumbs and arrows as abstract marks, closed loop geometry',
   },
@@ -34,7 +34,7 @@ const IMAGES = [
       'Abstract dashboards and adoption signals: hours and value as geometric bars and arcs, steel panels with red accents, no readable numbers or UI chrome',
   },
   {
-    name: 'insights-section',
+    name: 'insights-value',
     subject:
       'Maturity and activation abstract: ascending stages from idle seats to skilled delegation, stepped platforms and rising bars in brand palette',
   },
@@ -44,7 +44,7 @@ const IMAGES = [
       'Work mapping decision forks: three paths labelled only by shape — augment, automate, leave-be — branching from a work-flow spine, industrial editorial',
   },
   {
-    name: 'choice-section',
+    name: 'choice-triage',
     subject:
       'People, tasks and flows abstract: role silhouettes as simple blocks, task nodes and hand-off lines across a workflow map, flat industrial',
   },
@@ -54,7 +54,7 @@ const IMAGES = [
       'Board pack and scorecard abstract: decision lenses as overlapping frames and scorecard grids, serious production systems mood, no readable text',
   },
   {
-    name: 'measurements-section',
+    name: 'measurements-chain',
     subject:
       'Measurement chain with risk beside performance: linked nodes from intent to decision pack, dual panes for value and risk as balanced geometry',
   },
@@ -142,7 +142,7 @@ function brandSvg(name, subject) {
   <circle cx="610" cy="100" r="18" fill="#E10600"/>
   <path d="M720 280 H980" stroke="#6B6560" stroke-width="2"/>
   <path d="M960 260 L980 280 L960 300" stroke="#E10600" stroke-width="3" fill="none"/>`,
-    'our-goal-section': `
+    'our-goal-intent': `
   <circle cx="400" cy="315" r="120" fill="none" stroke="#A8A29A" stroke-width="3"/>
   <circle cx="400" cy="315" r="70" fill="none" stroke="#6B6560" stroke-width="2"/>
   <path d="M400 195 A120 120 0 0 1 520 315" stroke="#E10600" stroke-width="6" fill="none"/>
@@ -158,7 +158,7 @@ function brandSvg(name, subject) {
   <rect x="520" y="220" width="40" height="240" fill="#F5F2EB"/>
   <path d="M620 400 Q700 200 780 280 T940 240" stroke="#E10600" stroke-width="3" fill="none"/>
   <circle cx="940" cy="240" r="8" fill="#E10600"/>`,
-    'insights-section': `
+    'insights-value': `
   <rect x="200" y="400" width="160" height="80" fill="#1a1a1a" stroke="#6B6560"/>
   <rect x="400" y="320" width="160" height="160" fill="#161616" stroke="#A8A29A"/>
   <rect x="600" y="220" width="160" height="260" fill="#141414" stroke="#A8A29A"/>
@@ -173,7 +173,7 @@ function brandSvg(name, subject) {
   <rect x="720" y="150" width="100" height="60" fill="#1a1a1a" stroke="#F5F2EB"/>
   <rect x="720" y="285" width="100" height="60" fill="#1a1a1a" stroke="#E10600" stroke-width="3"/>
   <rect x="720" y="420" width="100" height="60" fill="#1a1a1a" stroke="#6B6560"/>`,
-    'choice-section': `
+    'choice-triage': `
   <rect x="180" y="180" width="60" height="100" fill="#1a1a1a" stroke="#F5F2EB"/>
   <rect x="180" y="320" width="60" height="100" fill="#1a1a1a" stroke="#A8A29A"/>
   <rect x="180" y="460" width="60" height="60" rx="30" fill="#1a1a1a" stroke="#6B6560"/>
@@ -192,7 +192,7 @@ function brandSvg(name, subject) {
   <line x1="740" y1="200" x2="960" y2="200" stroke="#6B6560"/>
   <line x1="740" y1="280" x2="920" y2="280" stroke="#A8A29A"/>
   <line x1="740" y1="360" x2="880" y2="360" stroke="#E10600" stroke-width="3"/>`,
-    'measurements-section': `
+    'measurements-chain': `
   <circle cx="220" cy="315" r="40" fill="#1a1a1a" stroke="#E10600" stroke-width="3"/>
   <circle cx="400" cy="315" r="40" fill="#1a1a1a" stroke="#A8A29A" stroke-width="2"/>
   <circle cx="580" cy="315" r="40" fill="#1a1a1a" stroke="#A8A29A" stroke-width="2"/>
