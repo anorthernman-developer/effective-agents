@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T14:35:17.092Z",
+  "generatedAt": "2026-09-16T14:41:37.750Z",
   "posts": [
     {
       "slug": "microsoft-teams-ask-copilot-from-search-on-mobile-571299",
@@ -34,9 +34,9 @@
         "Copilot",
         "Agent"
       ],
-      "summary": "\n\n<p>Now makers will have clear visibility into their consumption costs directly within preview tab and agent history for their preview/testing usage as well as all every historical run. Makers can see the costs as they test, iterate, and review conversations, making usage…\n\n",
+      "summary": "\n\nNow makers will have clear visibility into their consumption costs directly within preview tab and agent history for their preview/testing usage as well as all every historical run. Makers can see the costs as they test, iterate, and review conversations, making usage costs…\n\n",
       "id": "571194",
-      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194.svg"
+      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194.png"
     },
     {
       "slug": "microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196",
@@ -47,9 +47,9 @@
         "Copilot",
         "Agent"
       ],
-      "summary": "\n\n<p>Now makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those costs across the agents lifecylce. This will allow makers to see costs distributed across activities such as…\n\n",
+      "summary": "\n\nNow makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those costs across the agents lifecylce. This will allow makers to see costs distributed across activities such as…",
       "id": "571196",
-      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.svg"
+      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.png"
     },
     {
       "slug": "microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195",
@@ -60,9 +60,9 @@
         "Copilot",
         "Agent"
       ],
-      "summary": "\n\n<p>Now makers will have clear visibility into their consumption costs directly associated with their evaluations, including a breakdown of usage for eval generation, test runs and model grading/judgement. Makers can see the costs as they test, iterate, and review…\n\n",
+      "summary": "\n\nNow makers will have clear visibility into their consumption costs directly associated with their evaluations, including a breakdown of usage for eval generation, test runs and model grading/judgement. Makers can see the costs as they test, iterate, and review conversations,…\n\n",
       "id": "571195",
-      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195.svg"
+      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195.png"
     }
   ]
 }

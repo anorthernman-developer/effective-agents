@@ -6,8 +6,8 @@
  * → queue → emit up to 3 posts per day cycle
  * → write content/blog/*.md + blog HTML + data/roadmap-ai.json
  *
- * Images: Gemini when GEMINI_API_KEY else brand SVG
- * Audio: Gemini TTS ~5s when key else omit
+ * Images: Gemini 2.5/3.1 flash-image when GEMINI_API_KEY else brand SVG
+ * Audio: Gemini TTS ~5s (PCM wrapped as WAV) when key else omit
  *
  * Usage: node scripts/roadmap-blog.mjs [--force] [--limit N]
  */
@@ -15,6 +15,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
+import { spawnSync } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -59,13 +60,14 @@ function ensureDirs() {
 function stripHtml(s) {
   return String(s || '')
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-    .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -197,79 +199,217 @@ function brandSvg(title, id) {
 </svg>`;
 }
 
-async function maybeGeminiImage(title, slug) {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) return null;
+const GEMINI_IMAGE_MODELS = [
+  'gemini-2.5-flash-image',
+  'gemini-3.1-flash-lite-image',
+  'gemini-3.1-flash-image',
+];
+const GEMINI_TTS_MODELS = [
+  'gemini-2.5-flash-preview-tts',
+  'gemini-3.1-flash-tts-preview',
+];
+
+function geminiKey() {
+  return process.env.GEMINI_API_KEY || '';
+}
+
+function redactErr(s) {
+  const key = geminiKey();
+  let out = String(s || '');
+  if (key) out = out.split(key).join('***');
+  return out;
+}
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+async function geminiGenerate(model, body) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': geminiKey(),
+    },
+    body: JSON.stringify(body),
+  });
+  const raw = await res.text();
+  let json;
   try {
-    const prompt = `Minimal industrial editorial illustration, flat vector, palette only #E10600 #0A0A0A #F5F2EB and steel greys. Abstract Microsoft 365 agent / Copilot theme. No logos. No text. Mood: serious production systems. Subject hint: ${title.slice(0, 120)}`;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${key}`;
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
-      }),
-    });
-    if (!res.ok) {
-      console.warn('Gemini image HTTP', res.status);
-      return null;
-    }
-    const json = await res.json();
-    const parts = json?.candidates?.[0]?.content?.parts || [];
-    for (const p of parts) {
-      const inline = p.inlineData || p.inline_data;
-      if (inline?.data) {
+    json = JSON.parse(raw);
+  } catch {
+    json = { raw: raw.slice(0, 400) };
+  }
+  if (!res.ok) {
+    const msg = json?.error?.message || json?.raw || res.statusText;
+    const err = new Error(`${model} HTTP ${res.status}: ${redactErr(msg).slice(0, 240)}`);
+    err.status = res.status;
+    throw err;
+  }
+  return json;
+}
+
+function firstInline(json) {
+  const parts = json?.candidates?.[0]?.content?.parts || [];
+  for (const p of parts) {
+    const inline = p.inlineData || p.inline_data;
+    if (inline?.data) return inline;
+  }
+  return null;
+}
+
+function pcmToWav(pcm, sampleRate = 24000, channels = 1, bitDepth = 16) {
+  if (pcm.length >= 12 && pcm.toString('ascii', 0, 4) === 'RIFF') return pcm;
+  const header = Buffer.alloc(44);
+  const dataSize = pcm.length;
+  header.write('RIFF', 0);
+  header.writeUInt32LE(36 + dataSize, 4);
+  header.write('WAVE', 8);
+  header.write('fmt ', 12);
+  header.writeUInt32LE(16, 16);
+  header.writeUInt16LE(1, 20);
+  header.writeUInt16LE(channels, 22);
+  header.writeUInt32LE(sampleRate, 24);
+  header.writeUInt32LE(sampleRate * channels * (bitDepth / 8), 28);
+  header.writeUInt16LE(channels * (bitDepth / 8), 32);
+  header.writeUInt16LE(bitDepth, 34);
+  header.write('data', 36);
+  header.writeUInt32LE(dataSize, 40);
+  return Buffer.concat([header, pcm]);
+}
+
+function clip(s, n) {
+  const t = String(s || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (t.length <= n) return t;
+  return t.slice(0, n).replace(/\s+\S*$/, '');
+}
+
+function ttsScript(item) {
+  const what = clip(item.title.replace(/^Microsoft\s+/i, ''), 36);
+  const does = clip(whatItDoes(item), 28);
+  const worry = clip(classifyWorry(item), 28);
+  const means = clip(meansForUsers(item), 28);
+  // Ultra-short: ~5s spoken at brisk pace (~20–25 words).
+  return (
+    'In five seconds, brisk calm British voice, transcript only: ' +
+    `It is ${what}. Does: ${does}. Worry: ${worry}. Users: ${means}.`
+  );
+}
+
+async function maybeGeminiImage(title, slug) {
+  if (!geminiKey()) return null;
+  const prompt = `Minimal industrial editorial illustration, flat vector, palette only #E10600 #0A0A0A #F5F2EB and steel greys. Abstract Microsoft 365 agent / Copilot theme. No logos. No readable text. Mood: serious production systems. 16:9 landscape. Subject hint: ${title.slice(0, 120)}`;
+  const bodies = [
+    {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseModalities: ['IMAGE'],
+        imageConfig: { aspectRatio: '16:9' },
+      },
+    },
+    {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
+    },
+  ];
+  for (const model of GEMINI_IMAGE_MODELS) {
+    for (const body of bodies) {
+      try {
+        const json = await geminiGenerate(model, body);
+        const inline = firstInline(json);
+        if (!inline) {
+          console.warn(`Gemini image ${model}: no inline image in response`);
+          continue;
+        }
         const ext = (inline.mimeType || inline.mime_type || 'image/png').includes('jpeg')
           ? 'jpg'
           : 'png';
         const out = path.join(ROOT, 'assets', 'img', 'blog', `${slug}.${ext}`);
         fs.writeFileSync(out, Buffer.from(inline.data, 'base64'));
+        const svg = path.join(ROOT, 'assets', 'img', 'blog', `${slug}.svg`);
+        if (ext !== 'svg' && fs.existsSync(svg)) fs.unlinkSync(svg);
+        console.log(`Gemini image ${model} → ${slug}.${ext} (${fs.statSync(out).size} bytes)`);
         return `/assets/img/blog/${slug}.${ext}`;
+      } catch (e) {
+        console.warn('Gemini image failed:', e.message);
+        if (e.status === 429) await sleep(8000);
       }
     }
-  } catch (e) {
-    console.warn('Gemini image failed:', e.message);
   }
   return null;
 }
 
-async function maybeGeminiTts(text, slug) {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) return null;
+
+function squeezeWavTowardFiveSeconds(filePath, sampleRate = 24000, targetSec = 5.2) {
   try {
-    // Best-effort short TTS via Gemini; omit on failure
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${key}`;
-    const snippet = text.slice(0, 220);
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: `Say in a calm British industrial voice in about five seconds: ${snippet}` }] }],
-        generationConfig: {
-          responseModalities: ['AUDIO'],
-          speechConfig: {
-            voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
-          },
-        },
-      }),
-    });
-    if (!res.ok) {
-      console.warn('Gemini TTS HTTP', res.status);
-      return null;
+    const buf = fs.readFileSync(filePath);
+    const dur = Math.max(0.01, (buf.length - 44) / (sampleRate * 2));
+    if (dur <= 6) return;
+    let tempo = dur / targetSec;
+    const filters = [];
+    while (tempo > 2) {
+      filters.push('atempo=2.0');
+      tempo /= 2;
     }
-    const json = await res.json();
-    const parts = json?.candidates?.[0]?.content?.parts || [];
-    for (const p of parts) {
-      const inline = p.inlineData || p.inline_data;
-      if (inline?.data) {
-        const out = path.join(ROOT, 'assets', 'audio', 'blog', `${slug}.wav`);
-        fs.writeFileSync(out, Buffer.from(inline.data, 'base64'));
-        return `/assets/audio/blog/${slug}.wav`;
-      }
+    if (tempo > 1.02) filters.push(`atempo=${tempo.toFixed(3)}`);
+    if (!filters.length) return;
+    const tmp = `${filePath}.tmp.wav`;
+    const r = spawnSync(
+      'ffmpeg',
+      ['-y', '-i', filePath, '-filter:a', filters.join(','), '-ac', '1', '-ar', String(sampleRate), tmp],
+      { encoding: 'utf8' }
+    );
+    if (r.status === 0 && fs.existsSync(tmp) && fs.statSync(tmp).size > 44) {
+      fs.renameSync(tmp, filePath);
+      const after = (fs.statSync(filePath).size - 44) / (sampleRate * 2);
+      console.log(`TTS squeezed ${dur.toFixed(1)}s → ~${after.toFixed(1)}s`);
+    } else if (fs.existsSync(tmp)) {
+      fs.unlinkSync(tmp);
     }
   } catch (e) {
-    console.warn('Gemini TTS failed:', e.message);
+    console.warn('TTS squeeze skipped:', e.message);
+  }
+}
+
+async function maybeGeminiTts(item, slug) {
+  if (!geminiKey()) return null;
+  const spoken = ttsScript(item);
+  const body = {
+    contents: [{ parts: [{ text: spoken }] }],
+    generationConfig: {
+      responseModalities: ['AUDIO'],
+      speechConfig: {
+        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
+      },
+    },
+  };
+  for (const model of GEMINI_TTS_MODELS) {
+    try {
+      const json = await geminiGenerate(model, body);
+      const inline = firstInline(json);
+      if (!inline) {
+        console.warn(`Gemini TTS ${model}: no audio in response`);
+        continue;
+      }
+      const pcm = Buffer.from(inline.data, 'base64');
+      const mime = String(inline.mimeType || inline.mime_type || '');
+      const rateMatch = mime.match(/rate=(\d+)/i);
+      const rate = rateMatch ? parseInt(rateMatch[1], 10) : 24000;
+      const wav = pcmToWav(pcm, rate);
+      const out = path.join(ROOT, 'assets', 'audio', 'blog', `${slug}.wav`);
+      fs.writeFileSync(out, wav);
+      squeezeWavTowardFiveSeconds(out, rate);
+      const finalSize = fs.statSync(out).size;
+      console.log(`Gemini TTS ${model} → ${slug}.wav (${finalSize} bytes)`);
+      return `/assets/audio/blog/${slug}.wav`;
+    } catch (e) {
+      console.warn('Gemini TTS failed:', e.message);
+      if (e.status === 429) await sleep(8000);
+    }
   }
   return null;
 }
@@ -554,7 +694,23 @@ async function main() {
   const postsMeta = [];
   let emitted = 0;
 
-  for (const entry of [...queue.pending]) {
+  // --force: refresh existing posts (images/audio) before draining the pending queue
+  const existingEntries = [];
+  if (FORCE) {
+    const seen = new Set();
+    for (const f of fs.readdirSync(CONTENT_DIR).filter((x) => x.endsWith('.md'))) {
+      const raw = fs.readFileSync(path.join(CONTENT_DIR, f), 'utf8');
+      const m = raw.match(/^roadmap_id:\s*"?([^"\n]+)"?/m);
+      const id = m ? m[1].trim() : '';
+      if (!id || seen.has(id) || !byId[id]) continue;
+      seen.add(id);
+      existingEntries.push({ id, title: byId[id].title });
+    }
+    console.log(`Force-refresh existing posts: ${existingEntries.length}`);
+  }
+  const emitList = FORCE ? [...existingEntries, ...queue.pending] : [...queue.pending];
+
+  for (const entry of emitList) {
     if (emitted >= toEmit) break;
     const item = byId[entry.id];
     if (!item) {
@@ -579,10 +735,7 @@ async function main() {
       fs.writeFileSync(svgPath, brandSvg(item.title, item.id));
       image = `/assets/img/blog/${slug}.svg`;
     }
-    const audio = await maybeGeminiTts(
-      `${item.title}. ${whatItDoes(item)}. ${meansForUsers(item)}`,
-      slug
-    );
+    const audio = await maybeGeminiTts(item, slug);
 
     const meta = { slug, image, audio: audio || '' };
     const md = articleMarkdown(item, meta);
@@ -594,8 +747,10 @@ async function main() {
     fs.writeFileSync(path.join(dir, 'index.md'), md);
 
     queue.pending = queue.pending.filter((p) => p.id !== entry.id);
-    queue.emitted.push(item.id);
-    emittedSet.add(item.id);
+    if (!emittedSet.has(item.id)) {
+      queue.emitted.push(item.id);
+      emittedSet.add(item.id);
+    }
     emitted++;
     state.emittedToday++;
 

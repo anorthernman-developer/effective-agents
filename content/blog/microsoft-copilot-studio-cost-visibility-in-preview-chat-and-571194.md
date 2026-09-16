@@ -5,8 +5,8 @@ roadmap_id: "571194"
 source: "https://www.microsoft.com/microsoft-365/roadmap?id=571194"
 tags: ["Copilot Studio", "Copilot", "Agent"]
 slug: "microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194"
-image: "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194.svg"
-audio: ""
+image: "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194.png"
+audio: "/assets/audio/blog/microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194.wav"
 ---
 
 # Microsoft Copilot Studio: Cost visibility in Preview Chat and History
@@ -19,7 +19,7 @@ Microsoft Copilot Studio: Cost visibility in Preview Chat and History (Copilot S
 
 ## What it does
 
-<p>Now makers will have clear visibility into their consumption costs directly within preview tab and agent history for their preview/testing usage as well as all every historical run. Makers can see the costs as they test, iterate, and review conversations, making usage…
+Now makers will have clear visibility into their consumption costs directly within preview tab and agent history for their preview/testing usage as well as all every historical run. Makers can see the costs as they test, iterate, and review conversations, making usage costs…
 
 ## What to worry about
 

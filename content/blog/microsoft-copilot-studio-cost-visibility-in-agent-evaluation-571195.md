@@ -5,8 +5,8 @@ roadmap_id: "571195"
 source: "https://www.microsoft.com/microsoft-365/roadmap?id=571195"
 tags: ["Copilot Studio", "Copilot", "Agent"]
 slug: "microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195"
-image: "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195.svg"
-audio: ""
+image: "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195.png"
+audio: "/assets/audio/blog/microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195.wav"
 ---
 
 # Microsoft Copilot Studio: Cost visibility in Agent Evaluations
@@ -19,7 +19,7 @@ Microsoft Copilot Studio: Cost visibility in Agent Evaluations (Copilot Studio, 
 
 ## What it does
 
-<p>Now makers will have clear visibility into their consumption costs directly associated with their evaluations, including a breakdown of usage for eval generation, test runs and model grading/judgement. Makers can see the costs as they test, iterate, and review…
+Now makers will have clear visibility into their consumption costs directly associated with their evaluations, including a breakdown of usage for eval generation, test runs and model grading/judgement. Makers can see the costs as they test, iterate, and review conversations,…
 
 ## What to worry about
 

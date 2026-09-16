@@ -5,8 +5,8 @@ roadmap_id: "571196"
 source: "https://www.microsoft.com/microsoft-365/roadmap?id=571196"
 tags: ["Copilot Studio", "Copilot", "Agent"]
 slug: "microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196"
-image: "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.svg"
-audio: ""
+image: "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.png"
+audio: "/assets/audio/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.wav"
 ---
 
 # Microsoft Copilot Studio: Cost visibility in Monitor tab
@@ -19,7 +19,7 @@ Microsoft Copilot Studio: Cost visibility in Monitor tab (Copilot Studio, Copilo
 
 ## What it does
 
-<p>Now makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those costs across the agents lifecylce. This will allow makers to see costs distributed across activities such as…
+Now makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those costs across the agents lifecylce. This will allow makers to see costs distributed across activities such as authoring,…
 
 ## What to worry about
 
