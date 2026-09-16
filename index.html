@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Effective Agents — Ship Outcomes, Not Chat</title>
+  <meta name="description" content="Intelligence that works inside the tools people already use. Agents composed, governed, measurable, and improved by human feedback on Microsoft’s agent stack." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --ink: #000000;
+      --white: #F5F2EB;
+      --white-pure: #FFFFFF;
+      --red: #E10600;
+      --red-deep: #B00000;
+      --steel: #A8A29A;
+      --steel-dim: #6B6560;
+      --gutter: 30px;
+      --col: 800px;
+      --para: 1.25rem;   /* ~20px */
+      --sect: 3.125rem;  /* ~50px */
+      --font-display: "Inter", "IBM Plex Sans", system-ui, sans-serif;
+      --font-sans: "IBM Plex Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", "IBM Plex Mono", "SF Mono", Consolas, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: clamp(1.0625rem, 0.98rem + 0.35vw, 1.1875rem);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Industrial grit — faint scan / grain */
+    body::before {
+      content: "";
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      opacity: 0.035;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(245, 242, 235, 0.035) 2px,
+          rgba(245, 242, 235, 0.035) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(0, 0, 0, 0.12) 3px,
+          rgba(0, 0, 0, 0.12) 4px
+        );
+    }
+
+    ::selection {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    a {
+      color: var(--red);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    a:hover { border-bottom-color: var(--red); }
+    a:focus-visible {
+      outline: 2px solid var(--red);
+      outline-offset: 3px;
+    }
+
+    /* Outer frame: ~30px gutters, ~800px reading column */
+    .page {
+      width: min(100%, calc(var(--col) + 2 * var(--gutter)));
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .col {
+      max-width: var(--col);
+      margin: 0 auto;
+    }
+
+    .col-narrow {
+      max-width: 36rem;
+      margin: 0 auto 0 0;
+    }
+
+    /* —— Nav chips (invert TypeSafe: white pills on black) —— */
+    .site-nav {
+      position: relative;
+      z-index: 50;
+      padding: 1.25rem var(--gutter) 0.75rem;
+    }
+    .site-nav .inner {
+      max-width: calc(var(--col) + 2 * var(--gutter));
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 0.65rem;
+    }
+    .nav-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .chip {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      background: var(--white);
+      border: 1px solid var(--white);
+      padding: 0.4rem 0.75rem;
+      border-radius: 0;
+      border-bottom: none;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .chip:hover {
+      background: var(--white-pure);
+      color: var(--ink);
+      border-bottom: none;
+    }
+    .chip--brand span { color: var(--red); }
+    .chip--ghost {
+      background: transparent;
+      color: var(--steel);
+      border-color: rgba(168, 162, 154, 0.35);
+    }
+    .chip--ghost:hover {
+      color: var(--white);
+      border-color: var(--steel);
+      background: transparent;
+    }
+
+    /* —— Crop marks —— */
+    .framed {
+      position: relative;
+      margin: 0.75rem 0 var(--sect);
+      padding: 1.75rem 1.25rem 2rem;
+    }
+    .framed::before,
+    .framed::after,
+    .crop-bl,
+    .crop-br {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+    }
+    .framed::before {
+      top: 0; left: 0;
+      border-top: 1px solid var(--steel-dim);
+      border-left: 1px solid var(--steel-dim);
+    }
+    .framed::after {
+      top: 0; right: 0;
+      border-top: 1px solid var(--steel-dim);
+      border-right: 1px solid var(--steel-dim);
+    }
+    .framed .crop-bl {
+      bottom: 0; left: 0;
+      border-bottom: 1px solid var(--steel-dim);
+      border-left: 1px solid var(--steel-dim);
+    }
+    .framed .crop-br {
+      bottom: 0; right: 0;
+      border-bottom: 1px solid var(--steel-dim);
+      border-right: 1px solid var(--steel-dim);
+    }
+
+    /* —— Labels (mono) —— */
+    .label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin: 0 0 0.85rem;
+    }
+    .label::before {
+      content: "";
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: var(--red);
+      margin-right: 0.55rem;
+      vertical-align: middle;
+      transform: translateY(-1px);
+    }
+
+    /* —— Oversized grotesk H1 —— */
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.75rem, 1.4rem + 5.5vw, 5.25rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin: 0 0 1.5rem;
+      color: var(--white-pure);
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-family: var(--font-mono);
+      font-size: clamp(0.8rem, 0.72rem + 0.35vw, 0.95rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin: 0 0 2rem;
+    }
+
+    .lede {
+      font-size: 1.08em;
+      color: var(--white);
+      max-width: 38rem;
+      margin: 0;
+    }
+
+    /* —— Sections with thin vertical rule —— */
+    section.block {
+      padding: 0 0 var(--sect);
+      margin: 0;
+      border: none;
+    }
+
+    .ruled {
+      position: relative;
+      padding-left: 1.15rem;
+      border-left: 1px solid rgba(168, 162, 154, 0.28);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 1.15rem + 1.6vw, 2.15rem);
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      margin: 0 0 1.15rem;
+      color: var(--white-pure);
+    }
+
+    h3 {
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 1.75rem 0 0.65rem;
+      color: var(--white-pure);
+    }
+
+    p {
+      margin: 0 0 var(--para);
+    }
+    p:last-child { margin-bottom: 0; }
+
+    strong { font-weight: 600; color: var(--white-pure); }
+
+    /* Steps */
+    .steps {
+      list-style: none;
+      padding: 0;
+      margin: 1.75rem 0 0;
+      counter-reset: step;
+    }
+    .steps li {
+      position: relative;
+      padding: 1.35rem 0 1.35rem 3rem;
+      border-top: 1px solid rgba(168, 162, 154, 0.18);
+      counter-increment: step;
+    }
+    .steps li:last-child {
+      border-bottom: 1px solid rgba(168, 162, 154, 0.18);
+    }
+    .steps li::before {
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--red);
+    }
+    .steps h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1.05rem;
+    }
+    .steps p {
+      margin: 0;
+      color: var(--steel);
+      font-size: 0.95em;
+    }
+
+    /* Compare table */
+    .compare {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9em;
+    }
+    .compare th,
+    .compare td {
+      text-align: left;
+      padding: 0.8rem 0.65rem;
+      border-bottom: 1px solid rgba(168, 162, 154, 0.22);
+      vertical-align: top;
+    }
+    .compare th {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--steel);
+      font-weight: 500;
+    }
+    .compare td:first-child { color: var(--steel-dim); }
+    .compare td:last-child { color: var(--white); }
+
+    blockquote.pull {
+      margin: 1.75rem 0;
+      padding: 1.1rem 0 1.1rem 1.15rem;
+      border-left: 3px solid var(--red);
+      font-family: var(--font-display);
+      font-size: 1.28em;
+      font-weight: 500;
+      line-height: 1.35;
+      letter-spacing: -0.015em;
+      color: var(--white-pure);
+    }
+
+    /* Last words — oversized title reprise */
+    .last-words {
+      padding: clamp(2.5rem, 8vw, 4.5rem) 0 var(--sect);
+    }
+    .last-words .rule {
+      width: 2.5rem;
+      height: 3px;
+      background: var(--red);
+      margin: 0 0 1.5rem;
+      border: none;
+    }
+    .last-words h1 {
+      font-size: clamp(2.25rem, 1.2rem + 4vw, 4rem);
+      margin-bottom: 1.35rem;
+    }
+    .closing {
+      font-family: var(--font-mono);
+      font-size: clamp(0.9rem, 0.8rem + 0.35vw, 1.05rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin: 2.25rem 0 0;
+    }
+
+    /* Appendix / footnotes — narrower + mono */
+    .appendix {
+      padding: 0 0 calc(var(--sect) + 0.5rem);
+    }
+    .appendix .ruled {
+      max-width: 34rem;
+    }
+    .appendix .label {
+      margin-bottom: 1.1rem;
+    }
+    .appendix ol {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--steel-dim);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.55;
+    }
+    .appendix li { margin-bottom: 0.75rem; }
+    .appendix a { color: var(--steel); }
+
+    .sup {
+      font-family: var(--font-mono);
+      font-size: 0.65em;
+      color: var(--red);
+      vertical-align: super;
+      margin-left: 0.08em;
+    }
+
+    /* Footer with EA marks */
+    footer.site-foot {
+      padding: 1.5rem var(--gutter) 2.75rem;
+      border-top: 1px solid rgba(168, 162, 154, 0.18);
+    }
+    footer.site-foot .inner {
+      max-width: calc(var(--col) + 2 * var(--gutter));
+      margin: 0 auto;
+    }
+    .foot-marks {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--steel-dim);
+      letter-spacing: 0.15em;
+    }
+    .foot-marks .mark-l { color: var(--red); }
+    .foot-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.15rem;
+    }
+    .foot-chip {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      background: var(--ink);
+      border: 1px solid rgba(168, 162, 154, 0.35);
+      padding: 0.45rem 0.7rem;
+      border-radius: 0;
+      border-bottom: none;
+    }
+    .foot-chip:hover {
+      border-color: var(--red);
+      color: var(--white);
+      border-bottom: none;
+    }
+    .foot-meta {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.05em;
+      color: var(--steel-dim);
+      line-height: 1.7;
+    }
+
+    .hero {
+      padding: clamp(2.5rem, 8vw, 5rem) 0 0.5rem;
+    }
+
+    @media (max-width: 560px) {
+      :root { --gutter: 20px; }
+      .nav-cluster--links { display: none; }
+      .framed { padding: 1.35rem 0.65rem 1.5rem; }
+      .compare { display: block; overflow-x: auto; }
+      .ruled { padding-left: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a class="chip chip--brand" href="#">Effective <span>Agents</span></a>
+      <div class="nav-cluster nav-cluster--links">
+        <a class="chip" href="#mission">Mission</a>
+        <a class="chip" href="#carriage">Thesis</a>
+        <a class="chip" href="#rlhf">RLHF</a>
+        <a class="chip" href="#steps">Steps</a>
+        <a class="chip" href="#last">Last words</a>
+      </div>
+      <a class="chip chip--ghost" href="#appendix">Appendix</a>
+    </div>
+  </nav>
+
+  <header class="hero page">
+    <div class="col framed">
+      <span class="crop-bl" aria-hidden="true"></span>
+      <span class="crop-br" aria-hidden="true"></span>
+      <p class="label">Manifesto</p>
+      <h1>Intelligence that <em>works</em> — inside the tools people already use.</h1>
+      <p class="tagline">Ship Outcomes, Not Chat</p>
+      <p class="lede">
+        Agents composed, governed, measurable, and improved by human feedback on Microsoft’s agent stack.
+        Not chat theatre. Not a god-model. Work that finishes.<span class="sup" id="ref1"><a href="#fn1">1</a></span>
+      </p>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="block" id="mission">
+      <div class="col ruled">
+        <p class="label">01 — Mission</p>
+        <h2>Make enterprise intelligence effective.</h2>
+        <p>
+          Our mission is to ship agents that finish work inside Microsoft 365 —
+          composed from Intent to Governance, grounded in SharePoint and Graph,
+          steered by human preference, and measured by outcomes rather than conversation volume.
+        </p>
+        <p>
+          We are not chasing a model that can discuss everything.
+          We are shipping agents that can <strong>do</strong> the next useful thing —
+          under identity, policy, and audit — then get better from the people who correct them.
+        </p>
+      </div>
+    </section>
+
+    <section class="block" id="factory">
+      <div class="col ruled">
+        <p class="label">02 — We already have the factory floor</p>
+        <h2>The machinery is already running.</h2>
+        <p>
+          Enterprises already own identity that knows who may see what;
+          SharePoint and Graph that hold the corpus of real work;
+          Copilot as a surface people already open;
+          Copilot Studio and Agent Builder to compose behaviour;
+          Microsoft Foundry to host, evaluate, and govern;
+          Purview and Scout to watch for drift and overreach.
+        </p>
+        <p>
+          What is missing is not another chatbot.
+          What is missing is a discipline: treat agents as <strong>production systems</strong> with feedback loops —
+          not demos with personality.
+        </p>
+        <blockquote class="pull">Chat is a door. Effectiveness is what walks through it.</blockquote>
+      </div>
+    </section>
+
+    <section class="block" id="carriage">
+      <div class="col ruled">
+        <p class="label">03 — The horseless carriage</p>
+        <h2>Stop bolting chat onto the intranet.</h2>
+        <p>
+          Early cars looked like carriages with engines attached.
+          Early enterprise AI looks like chatbots bolted onto institutional knowledge.
+          Users ask. The bot answers. Someone still copies the answer into the form,
+          the ticket, the policy pack, the approval chain.
+        </p>
+        <p>That is decorative intelligence — useful for discovery, weak for delivery.</p>
+        <table class="compare" aria-label="Chatbot versus effective agent">
+          <thead>
+            <tr>
+              <th>Chatbot bolted on</th>
+              <th>Effective agent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Answers in a pane</td>
+              <td>Completes a step in the workflow</td>
+            </tr>
+            <tr>
+              <td>Context is whatever fit in the prompt</td>
+              <td>Grounding is SharePoint, Graph, and permissions</td>
+            </tr>
+            <tr>
+              <td>Success = fluent reply</td>
+              <td>Success = task completion + audit trail</td>
+            </tr>
+            <tr>
+              <td>Feedback buried in a log</td>
+              <td>Preference loops that retrain and re-steer</td>
+            </tr>
+            <tr>
+              <td>Governance = hope</td>
+              <td>Foundry, Purview, Scout, eval sets</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The carriage was never the point. Transport was. Conversation was never the point. <strong>Outcomes</strong> are.</p>
+      </div>
+    </section>
+
+    <section class="block" id="rlhf">
+      <div class="col ruled">
+        <p class="label">04 — RLHF, reclaimed</p>
+        <h2>Human preference is not a crutch. It is the signal.</h2>
+        <p>
+          A common critique says RLHF produces chatty, human-pleasing models that need humans in the loop forever.
+          In the enterprise, that critique misses the asset.
+        </p>
+        <blockquote class="pull">
+          Human preference grounded in real work is not a bug — it is the training signal.<span class="sup"><a href="#fn2">2</a></span>
+        </blockquote>
+        <p>
+          When a knowledge worker thumbs down a SharePoint agent’s draft, corrects a classification,
+          or escalates a borderline approval, they are not babysitting a failed AGI.
+          They are labelling the only dataset that matters:
+          <em>what good looks like here</em>, under <em>these</em> policies, in <em>this</em> tenant.
+        </p>
+        <p>
+          Preference. Correction. Escalation. Eval sets.
+          Agents that cannot be corrected cannot be trusted.
+          Agents that are corrected and never learn are theatre.
+          Effective agents <strong>close the loop</strong>.
+        </p>
+      </div>
+    </section>
+
+    <section class="block" id="governance">
+      <div class="col ruled">
+        <p class="label">05 — Safe emergence</p>
+        <h2>Governed enough to bury five layers deep.</h2>
+        <p>
+          You let a component run unattended if it is reliable.
+          You only build on top of it if it is trustworthy.
+          Permissions and sensitivity labels bound what grounding can see.
+          Copilot Studio and Agent Builder bound what actions can fire.
+          Foundry binds models, tools, and evaluations.
+          Purview binds retention, DLP, and audit.
+          Scout binds visibility at estate scale.
+        </p>
+        <p>
+          We call this <strong>governed emergence</strong>:
+          capability grows inside rails strong enough that leaders will fund the next layer.<span class="sup"><a href="#fn3">3</a></span>
+        </p>
+      </div>
+    </section>
+
+    <section class="block" id="steps">
+      <div class="col ruled">
+        <p class="label">06 — Three steps</p>
+        <h2>Compose. Instrument. Measure.</h2>
+        <ol class="steps">
+          <li>
+            <h3>Compose on the stack you already own</h3>
+            <p>
+              Start with Intent → Agent → Grounding → Action → Feedback → Governance.
+              Map every agent to Microsoft products in the estate.
+              Prefer SharePoint agents and Copilot surfaces over orphaned web UIs.
+            </p>
+          </li>
+          <li>
+            <h3>Instrument preference as production data</h3>
+            <p>
+              Treat every thumbs-up, correction, and escalation as first-class telemetry.
+              Build eval sets from failures.
+              Calibrate confidence so “I’m unsure” routes to a human before “I’m fluent” invents a policy.
+            </p>
+          </li>
+          <li>
+            <h3>Measure effectiveness, not engagement</h3>
+            <p>
+              Report task completion, time-to-outcome, escalation rate, and confidence calibration.
+              If the metric board only shows message counts, you are funding chat theatre.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="last-words" id="last">
+      <div class="col framed">
+        <span class="crop-bl" aria-hidden="true"></span>
+        <span class="crop-br" aria-hidden="true"></span>
+        <p class="label">Last words</p>
+        <hr class="rule" />
+        <h1>The age of decorative copilots is ending.</h1>
+        <p>
+          The organisations that win will not be those with the wittiest system prompt.
+          They will be those whose agents ship work, under governance,
+          improved by the people who know the work.
+        </p>
+        <p>We are not building God.</p>
+        <p>We are building <strong>effective agents</strong>.</p>
+        <p class="closing">Ship Outcomes, Not Chat.</p>
+      </div>
+    </section>
+
+    <aside class="appendix" id="appendix" aria-label="Appendix">
+      <div class="ruled">
+        <p class="label">Appendix</p>
+        <ol>
+          <li id="fn1">
+            Effective Agents is an independent practice and brand. Built on Microsoft technologies.
+            Not affiliated with Microsoft Corporation or TypeSafe AI.
+          </li>
+          <li id="fn2">
+            “RLHF” here means enterprise preference loops — ratings, corrections, escalations,
+            and eval-driven updates applied to agents on the Microsoft stack —
+            not a claim about training foundation models from scratch.
+          </li>
+          <li id="fn3">
+            Product names (SharePoint, Copilot, Copilot Studio, Agent Builder, Microsoft Foundry,
+            Purview, Scout, Graph) describe interoperability. Trademarks belong to their respective owners.
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="site-foot">
+    <div class="inner">
+      <div class="foot-marks" aria-hidden="true">
+        <span class="mark-l">⊢ ∵</span>
+        <span>■ □</span>
+        <span>⊣</span>
+      </div>
+      <div class="foot-chips">
+        <span class="foot-chip">Effective Agents · <span id="y"></span></span>
+        <span class="foot-chip">Ship Outcomes, Not Chat</span>
+        <span class="foot-chip">en-GB</span>
+      </div>
+      <div class="foot-meta">
+        Built on Microsoft technologies. Not affiliated with Microsoft or TypeSafe AI.<br />
+        © <span id="y2"></span> Effective Agents.
+      </div>
+    </div>
+  </footer>
+  <script>
+    var y = new Date().getFullYear();
+    document.getElementById("y").textContent = y;
+    document.getElementById("y2").textContent = y;
+  </script>
+</body>
+</html>
