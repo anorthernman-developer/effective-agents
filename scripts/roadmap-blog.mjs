@@ -328,23 +328,65 @@ function clip(s, n) {
   return t.slice(0, n).replace(/\s+\S*$/, '');
 }
 
-function firstSentence(s, n) {
-  const t = String(s || '').replace(/\s+/g, ' ').trim();
-  const m = t.match(/^[^.!?]+[.!?]?/);
-  return clip(m ? m[0] : t, n);
+const TTS_STYLE =
+  'Speak slowly and clearly, calm British English, short pauses between sentences. Do not rush:';
+
+function ttsDoesLine(item) {
+  const hay = `${item.title} ${item.description}`.toLowerCase();
+  if (/cost|consumption|visibility/.test(hay) && /evaluat/.test(hay))
+    return 'It shows makers their agent evaluation costs.';
+  if (/cost|consumption|visibility/.test(hay) && /monitor/.test(hay))
+    return 'It shows consumption costs in the Monitor tab.';
+  if (/cost|consumption|visibility/.test(hay) && /(preview|history)/.test(hay))
+    return 'It shows consumption costs in preview chat and history.';
+  if (/dlp|data loss|purview/.test(hay))
+    return 'It expands inline data-loss prevention protection.';
+  if (/ask copilot|search/.test(hay) && /mobile|teams/.test(hay))
+    return 'It lets people ask Copilot from Teams search on mobile.';
+  let d = clip(whatItDoes(item), 90).replace(/[,:;–—-]\s*$/, '').trim();
+  if (d && !/[.!?]$/.test(d)) d += '.';
+  return d || 'It changes how Microsoft 365 agents show up for makers.';
+}
+
+function ttsWorryLine(item) {
+  const hay = `${item.title} ${item.description}`.toLowerCase();
+  if (/cost|consumption|credit|billing/.test(hay))
+    return 'Do not let cost dashboards become another chat bill.';
+  if (/approval|human|escalat/.test(hay))
+    return 'Approvals help only if they close the feedback loop.';
+  if (/dlp|purview|security|readiness/.test(hay))
+    return 'Blocking alone needs evals and preference signals.';
+  if (/notification|async/.test(hay))
+    return 'Noise without completion is chat theatre again.';
+  if (/chat|search|ask/.test(hay))
+    return 'Fluent answers are not shipped outcomes.';
+  return 'Measure outcomes, not decorative intelligence.';
+}
+
+function ttsMeansLine(item) {
+  const tags = pickTags(item);
+  if (tags.includes('Copilot Studio'))
+    return 'Prove effectiveness, not just publish bots.';
+  if (tags.includes('Cowork'))
+    return 'Keep Purview and preference discipline in every channel.';
+  if (tags.includes('SharePoint agent') || /sharepoint/i.test(item.title))
+    return 'Prefer agents that update libraries, not only summarise them.';
+  if (tags.includes('Copilot'))
+    return 'Route work through agents that finish audited steps.';
+  return 'Ask what finishes, what is logged, and what improves next.';
+}
+
+function ttsWhat(item) {
+  const t = item.title.replace(/^Microsoft\s+/i, '');
+  if (/purview/i.test(t) && /data loss|dlp/i.test(t))
+    return 'Purview expanded inline data-loss prevention';
+  return clip(t, 58);
 }
 
 function ttsScript(item) {
-  // Full short sentences, not telegram fragments. Aim ~30–40 spoken words → ~12–20s calm pace.
-  // Prefer first complete sentence + generous clip caps so we do not chop mid-word into gibberish.
-  const what = clip(item.title.replace(/^Microsoft\s+/i, ''), 56);
-  const does = firstSentence(whatItDoes(item), 95);
-  const worry = firstSentence(classifyWorry(item), 85);
-  const means = firstSentence(meansForUsers(item), 85);
-  return (
-    'Speak slowly and clearly, calm British English, short pauses between sentences. Do not rush. ' +
-    `This item is ${what}. What it does: ${does} What to worry about: ${worry} What it means for users: ${means}`
-  );
+  // Four full short sentences (what / does / worry / users). ~28–36 words → ~12–20s calm pace.
+  // Style prefix is TTS_STYLE (before the colon); never atempo-squeeze the WAV.
+  return `This is ${ttsWhat(item)}. ${ttsDoesLine(item)} ${ttsWorryLine(item)} ${ttsMeansLine(item)}`;
 }
 
 async function maybeGeminiImage(title, slug) {
@@ -395,12 +437,17 @@ async function maybeGeminiImage(title, slug) {
 async function maybeGeminiTts(item, slug) {
   if (!geminiKey()) return null;
   const spoken = ttsScript(item);
+  // Style sits before the colon so Gemini TTS treats it as delivery, not transcript.
+  const prompt = `${TTS_STYLE}
+
+${spoken}`;
   const body = {
-    contents: [{ parts: [{ text: spoken }] }],
+    contents: [{ parts: [{ text: prompt }] }],
     generationConfig: {
       responseModalities: ['AUDIO'],
       speechConfig: {
-        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } }, // calm steady prebuilt
+        // Kore: calm, firm, steady (calmer than breezy Aoede)
+        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
       },
     },
   };
@@ -420,7 +467,8 @@ async function maybeGeminiTts(item, slug) {
       const out = path.join(ROOT, 'assets', 'audio', 'blog', `${slug}.wav`);
       fs.writeFileSync(out, wav);
       const finalSize = fs.statSync(out).size;
-      console.log(`Gemini TTS ${model} → ${slug}.wav (${finalSize} bytes)`);
+      const dur = (finalSize - 44) / (rate * 2);
+      console.log(`Gemini TTS ${model} → ${slug}.wav (${finalSize} bytes, ${dur.toFixed(1)}s)`);
       return `/assets/audio/blog/${slug}.wav`;
     } catch (e) {
       console.warn('Gemini TTS failed:', e.message);
