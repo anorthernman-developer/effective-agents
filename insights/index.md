@@ -21,11 +21,11 @@ Insights are not vanity charts. They answer four board-grade questions:
 
 If a slide cannot support a decision (expand, remediate, pause funding), it is decoration.
 
-![Ascending maturity stages from idle seats to skilled delegation](../assets/img/insights-section.png)
-
 ---
 
 ## The value chain we recommend
+
+![Hours-to-value abstraction: arcs transforming into rising worth](../assets/img/insights-section.png)
 
 A practical chain used across mature Copilot programmes:
 

@@ -33,7 +33,7 @@ Work **backwards from the done state**. Ask:
 
 ### 4. Choose the intervention
 
-![People, tasks and hand-offs across a workflow map](../assets/img/choice-section.png)
+![Three abstract paths: augment, automate, or leave be](../assets/img/choice-section.png)
 
 | Choice | When | Typical Microsoft shape |
 |--------|------|-------------------------|

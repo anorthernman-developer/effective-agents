@@ -12,7 +12,7 @@ Make enterprise intelligence **effective**: agents that finish work inside Micro
 
 We are not chasing a model that can discuss everything. We are shipping agents that can **do** the next useful thing — under identity, policy, and audit — then get better from the people who correct them.
 
-![Preference feedback cycling into agent improvement loops](./assets/img/our-goal-section.png)
+![Intent-to-governance stack as layered abstract geometry](./assets/img/our-goal-section.png)
 
 ---
 
