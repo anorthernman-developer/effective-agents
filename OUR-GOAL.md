@@ -2,6 +2,8 @@
 
 **Ship Outcomes, Not Chat**
 
+![Abstract closed-loop agents completing work outcomes](./assets/img/our-goal-hero.png)
+
 ---
 
 ## The goal
@@ -9,6 +11,8 @@
 Make enterprise intelligence **effective**: agents that finish work inside Microsoft 365 — composed from Intent to Governance, grounded in SharePoint and Graph, steered by human preference, and measured by outcomes rather than conversation volume.¹
 
 We are not chasing a model that can discuss everything. We are shipping agents that can **do** the next useful thing — under identity, policy, and audit — then get better from the people who correct them.
+
+![Preference feedback cycling into agent improvement loops](./assets/img/our-goal-section.png)
 
 ---
 

@@ -499,11 +499,16 @@ footer.site-foot .inner {
   max-width: calc(100% + var(--s3));
 }
 
-/* Supporting page art (section figures) — φ spacing, not wallpaper */
-.page-art {
+/* Supporting page art (section figures) — full column, φ margin, hairline */
+.page-art,
+.section-art,
+img.hero-art,
+svg.hero-art {
   display: block;
-  width: min(100%, 36rem);
-  margin: var(--s5) 0 var(--s4);
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: var(--s4) 0;
   border: 1px solid var(--border);
   aspect-ratio: 16 / 9;
   object-fit: cover;
@@ -513,13 +518,18 @@ footer.site-foot .inner {
   margin-left: 0;
 }
 .col.ruled .page-art,
-.prose-page .page-art {
+.col.ruled .section-art,
+.prose-page .page-art,
+.prose-page .section-art {
   margin-top: var(--s4);
   margin-bottom: var(--s4);
 }
-.hero .hero-media {
-  /* keep under lede; rule-of-thirds weight already on .hero */
-  max-width: min(100%, 40rem);
+.hero .hero-media,
+.hero .hero-art {
+  /* keep under lede */
+  width: 100%;
+  max-width: 100%;
+  margin-top: var(--s4);
 }
 
 

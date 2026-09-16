@@ -4,6 +4,8 @@
 
 Turn Copilot and agent telemetry into a **defensible ROI narrative** — hours saved, assisted value, adoption and readiness, activation versus licensed seats, agent health, and consumption — without mistaking message volume for effectiveness.
 
+![Abstract telemetry dashboard translating signals into value](../assets/img/insights-hero.png)
+
 Effective Agents does not ship Microsoft’s dashboards. We use the same *dashboard thinking* visible in community and Microsoft research patterns (for example ValueLens for Microsoft Copilot and AI-in-One style exports) to decide what boards should see, what operators should act on, and what to ignore.
 
 ---
@@ -18,6 +20,8 @@ Insights are not vanity charts. They answer four board-grade questions:
 4. **Are agents healthy?** — resolution, abandonment, escalation, response time, feedback themes.
 
 If a slide cannot support a decision (expand, remediate, pause funding), it is decoration.
+
+![Ascending maturity stages from idle seats to skilled delegation](../assets/img/insights-section.png)
 
 ---
 
