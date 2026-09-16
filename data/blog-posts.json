@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16T14:41:37.750Z",
+  "generatedAt": "2026-09-16T14:46:57.113Z",
   "posts": [
     {
       "slug": "microsoft-teams-ask-copilot-from-search-on-mobile-571299",
@@ -9,9 +9,9 @@
         "Copilot",
         "Teams"
       ],
-      "summary": "\n\n<p>Get answers without leaving search. As you type in the Teams search bar, you'll see an option to ask Copilot alongside search results. You can also select Ask Copilot from the search results page to turn your query into a Copilot conversation, helping you quickly find…\n\n",
+      "summary": "\n\nGet answers without leaving search. As you type in the Teams search bar, you'll see an option to ask Copilot alongside search results. You can also select Ask Copilot from the search results page to turn your query into a Copilot conversation, helping you quickly find…\n\n",
       "id": "571299",
-      "image": "/assets/img/blog/microsoft-teams-ask-copilot-from-search-on-mobile-571299.svg"
+      "image": "/assets/img/blog/microsoft-teams-ask-copilot-from-search-on-mobile-571299.png"
     },
     {
       "slug": "microsoft-purview-data-loss-prevention-expanded-inline-prote-571396",
@@ -21,9 +21,9 @@
         "AI",
         "Purview"
       ],
-      "summary": "\n\n<p>Microsoft Purview collection and data loss prevention (DLP) policies will support browser inline protection for a significantly broader set of unmanaged generative AI apps in Edge for Business. Admins can use existing Purview policy experiences to detect and protect…\n\n",
+      "summary": "\n\nMicrosoft Purview collection and data loss prevention (DLP) policies will support browser inline protection for a significantly broader set of unmanaged generative AI apps in Edge for Business. Admins can use existing Purview policy experiences to detect and protect…",
       "id": "571396",
-      "image": "/assets/img/blog/microsoft-purview-data-loss-prevention-expanded-inline-prote-571396.svg"
+      "image": "/assets/img/blog/microsoft-purview-data-loss-prevention-expanded-inline-prote-571396.png"
     },
     {
       "slug": "microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194",

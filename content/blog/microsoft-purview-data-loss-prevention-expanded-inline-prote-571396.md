@@ -5,8 +5,8 @@ roadmap_id: "571396"
 source: "https://www.microsoft.com/microsoft-365/roadmap?id=571396"
 tags: ["AI", "Purview"]
 slug: "microsoft-purview-data-loss-prevention-expanded-inline-prote-571396"
-image: "/assets/img/blog/microsoft-purview-data-loss-prevention-expanded-inline-prote-571396.svg"
-audio: ""
+image: "/assets/img/blog/microsoft-purview-data-loss-prevention-expanded-inline-prote-571396.png"
+audio: "/assets/audio/blog/microsoft-purview-data-loss-prevention-expanded-inline-prote-571396.wav"
 ---
 
 # Microsoft Purview: Data Loss Prevention-Expanded inline protection for unmanaged apps in Edge for Business
@@ -19,7 +19,7 @@ Microsoft Purview: Data Loss Prevention-Expanded inline protection for unmanaged
 
 ## What it does
 
-<p>Microsoft Purview collection and data loss prevention (DLP) policies will support browser inline protection for a significantly broader set of unmanaged generative AI apps in Edge for Business. Admins can use existing Purview policy experiences to detect and protect…
+Microsoft Purview collection and data loss prevention (DLP) policies will support browser inline protection for a significantly broader set of unmanaged generative AI apps in Edge for Business. Admins can use existing Purview policy experiences to detect and protect sensitive…
 
 ## What to worry about
 

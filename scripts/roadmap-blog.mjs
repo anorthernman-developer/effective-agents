@@ -9,7 +9,7 @@
  * Images: Gemini 2.5/3.1 flash-image when GEMINI_API_KEY else brand SVG
  * Audio: Gemini TTS ~5s (PCM wrapped as WAV) when key else omit
  *
- * Usage: node scripts/roadmap-blog.mjs [--force] [--limit N]
+ * Usage: node scripts/roadmap-blog.mjs [--force] [--limit N] [--slug SLUG ...] [--slugs a,b]
  */
 import fs from 'fs';
 import path from 'path';
@@ -44,6 +44,14 @@ const args = process.argv.slice(2);
 const FORCE = args.includes('--force');
 const limitIdx = args.indexOf('--limit');
 const LIMIT = limitIdx >= 0 ? parseInt(args[limitIdx + 1], 10) : MAX_PER_CYCLE;
+/** Optional: --slug foo --slug bar (or --slugs a,b) to force-refresh only those posts */
+const ONLY_SLUGS = new Set();
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--slug' && args[i + 1]) ONLY_SLUGS.add(args[++i]);
+  else if (args[i] === '--slugs' && args[i + 1]) {
+    for (const s of args[++i].split(',').map((x) => x.trim()).filter(Boolean)) ONLY_SLUGS.add(s);
+  }
+}
 
 function ensureDirs() {
   for (const d of [
@@ -210,7 +218,27 @@ const GEMINI_TTS_MODELS = [
 ];
 
 function geminiKey() {
-  return process.env.GEMINI_API_KEY || '';
+  if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
+  // Fall back to box secrets (sand-data/box-secrets.json → card.GEMINI_API_KEY)
+  try {
+    const candidates = [
+      path.join('/home/box/sand-data/box-secrets.json'),
+      path.join(ROOT, '..', 'sand-data', 'box-secrets.json'),
+      path.join(process.env.HOME || '', 'sand-data', 'box-secrets.json'),
+    ];
+    for (const cand of candidates) {
+      if (!fs.existsSync(cand)) continue;
+      const j = JSON.parse(fs.readFileSync(cand, 'utf8'));
+      const k = j?.card?.GEMINI_API_KEY || j?.GEMINI_API_KEY || '';
+      if (k) {
+        process.env.GEMINI_API_KEY = k;
+        return k;
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+  return '';
 }
 
 function redactErr(s) {
@@ -699,6 +727,8 @@ async function main() {
   if (FORCE) {
     const seen = new Set();
     for (const f of fs.readdirSync(CONTENT_DIR).filter((x) => x.endsWith('.md'))) {
+      const slugFromFile = f.replace(/\.md$/, '');
+      if (ONLY_SLUGS.size && !ONLY_SLUGS.has(slugFromFile)) continue;
       const raw = fs.readFileSync(path.join(CONTENT_DIR, f), 'utf8');
       const m = raw.match(/^roadmap_id:\s*"?([^"\n]+)"?/m);
       const id = m ? m[1].trim() : '';
@@ -706,9 +736,17 @@ async function main() {
       seen.add(id);
       existingEntries.push({ id, title: byId[id].title });
     }
-    console.log(`Force-refresh existing posts: ${existingEntries.length}`);
+    console.log(
+      `Force-refresh existing posts: ${existingEntries.length}` +
+        (ONLY_SLUGS.size ? ` (filtered to ${ONLY_SLUGS.size} slug(s))` : '')
+    );
   }
-  const emitList = FORCE ? [...existingEntries, ...queue.pending] : [...queue.pending];
+  const emitList =
+    FORCE && ONLY_SLUGS.size
+      ? [...existingEntries]
+      : FORCE
+        ? [...existingEntries, ...queue.pending]
+        : [...queue.pending];
 
   for (const entry of emitList) {
     if (emitted >= toEmit) break;

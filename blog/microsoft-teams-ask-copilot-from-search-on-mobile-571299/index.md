@@ -5,8 +5,8 @@ roadmap_id: "571299"
 source: "https://www.microsoft.com/microsoft-365/roadmap?id=571299"
 tags: ["Copilot", "Teams"]
 slug: "microsoft-teams-ask-copilot-from-search-on-mobile-571299"
-image: "/assets/img/blog/microsoft-teams-ask-copilot-from-search-on-mobile-571299.svg"
-audio: ""
+image: "/assets/img/blog/microsoft-teams-ask-copilot-from-search-on-mobile-571299.png"
+audio: "/assets/audio/blog/microsoft-teams-ask-copilot-from-search-on-mobile-571299.wav"
 ---
 
 # Microsoft Teams: Ask Copilot from Search on Mobile
@@ -19,7 +19,7 @@ Microsoft Teams: Ask Copilot from Search on Mobile (Copilot, Teams). Roadmap id 
 
 ## What it does
 
-<p>Get answers without leaving search. As you type in the Teams search bar, you'll see an option to ask Copilot alongside search results. You can also select Ask Copilot from the search results page to turn your query into a Copilot conversation, helping you quickly find…
+Get answers without leaving search. As you type in the Teams search bar, you'll see an option to ask Copilot alongside search results. You can also select Ask Copilot from the search results page to turn your query into a Copilot conversation, helping you quickly find…
 
 ## What to worry about
 
