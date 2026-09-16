@@ -3,71 +3,94 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Microsoft Copilot Studio: Cost visibility in Monitor tab — Effective Agents</title>
-  <meta name="description" content="Now makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those cos" />
+  <title>Building Effective Agents — Effective Agents</title>
+  <meta name="description" content="Compose agents that finish work on Copilot Studio, Agent Builder, and SharePoint agents." />
   <meta name="theme-color" content="#0A0A0A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../assets/css/site.css" />
   <script src="../../assets/js/theme-boot.js"></script>
+
 </head>
 <body>
   <nav class="site-nav" aria-label="Primary">
     <div class="inner">
       <a class="chip chip--brand" href="../../">Effective <span>Agents</span></a>
       <div class="nav-cluster nav-cluster--links">
-        
         <a class="chip" href="../../">Our Goal</a>
         <a class="chip" href="../../start/">Start</a>
-        <a class="chip" href="../../capabilities/">Capabilities</a>
+        <a class="chip chip--active" href="../../capabilities/">Capabilities</a>
         <a class="chip" href="../../insights/">Insights</a>
         <a class="chip" href="../../choice/">Choice</a>
         <a class="chip" href="../../measurements/">Measurements</a>
-        <a class="chip chip--active" href="../../blog/">Blog</a>
+        <a class="chip" href="../../blog/">Blog</a>
         <a class="chip" href="../../explore/">Explore</a>
         <a class="chip" href="../../game/">Game</a>
         <a class="chip" href="../../legal/">Legal</a>
       </div>
       <div class="nav-cluster">
         <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-grid-toggle>Grid</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
       </div>
     </div>
   </nav>
-  <article class="page hero">
-    <div class="col framed prose">
+
+  <header class="hero page">
+    <div class="col framed">
       <span class="crop-bl" aria-hidden="true"></span>
       <span class="crop-br" aria-hidden="true"></span>
-      <p class="label">Blog · 2026-09-15</p>
-      <h1>Microsoft Copilot Studio: Cost visibility in Monitor tab</h1>
+      <p class="label">Capability · 04</p>
+      <h1>Building Effective Agents</h1>
       <p class="tagline">Ship Outcomes, Not Chat</p>
-      <p class="meta" style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">
-        <span class="badge badge--red">Copilot Studio</span> <span class="badge badge--red">Copilot</span> <span class="badge badge--red">Agent</span>
-        · id 571196
-      </p>
-      <img class="hero-art" src="../../assets/img/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.png" alt="" />
-      <div class="audio-bar">Listen (short)<audio controls preload="none" src="../../assets/audio/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.wav"></audio></div>
-      <h2>What it is</h2>
-      <p>Microsoft Copilot Studio: Cost visibility in Monitor tab. Tags: Copilot Studio, Copilot, Agent. Roadmap id <code>571196</code>.</p>
-      <h2>What it does</h2>
-      <p>Now makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those costs across the agents lifecylce. This will allow makers to see costs distributed across activities such as authoring,…</p>
-      <div class="worry">
-        <h2>What to worry about</h2>
-        <p>Cost visibility without outcome metrics can become another chat bill. Tie spend to completed work.</p>
-      </div>
-      <h2>What it means for users</h2>
-      <p>Makers and CoE leads get clearer levers on agent lifecycle cost and behaviour — use them to prove effectiveness, not just publish bots.</p>
-      <p style="margin-top:2rem;font-size:0.9em;color:var(--muted);">Source: <a href="https://www.microsoft.com/microsoft-365/roadmap?id=571196" rel="noopener">Microsoft 365 Roadmap</a> · <a href="./index.md">Markdown mirror</a></p>
+      <p class="lede">Compose agents that finish work on Copilot Studio, Agent Builder, and SharePoint agents.</p>
     </div>
-  </article>
+  </header>
+  <main class="page prose-page">
+    <section class="block">
+      <div class="col ruled">
+        <p class="label">Problem</p>
+        <h2>What breaks first</h2>
+        <p>Prompt packs masquerade as products. Agents chat forever, skip grounding, or act without gates. Preference signals rot in unused thumbs.</p>
+      </div>
+    </section>
+    <section class="block">
+      <div class="col ruled">
+        <p class="label">Approach</p>
+        <h2>How we cut through</h2>
+        <p>Ship the stack: Intent → Agent → Grounding → Action → Feedback → Governance. Prefer citations over vibes, reversible actions with human gates, and weekly preference reviews that actually change behaviour.</p>
+      </div>
+    </section>
+    <section class="block">
+      <div class="col ruled">
+        <p class="label">What we do</p>
+        <h2>Concrete work, not brochure fog</h2>
+        <ul>
+        <li>Agent composition patterns on Microsoft’s stack</li>
+        <li>Grounding with Graph / SharePoint ACLs and labels</li>
+        <li>Action design with connectors, approvals, audit</li>
+        <li>Preference loops + eval regression gates before promote</li>
+        </ul>
+        <p style="margin-top:1.25rem"><a href="../../">Our Goal</a> · <a href="../processes/">Effective Processes</a> · <a href="../grc/">Governance, Risk & Compliance</a></p>
+        <div class="cap-cta-row">
+          <a class="chip chip--active" href="../../start/">Start the challenge funnel</a>
+          <a class="chip" href="../../legal/#tip">Tip / contact</a>
+          <a class="chip chip--ghost" href="../">All capabilities</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <footer class="site-foot">
     <div class="inner">
-      <div class="foot-marks"><span class="mark-l">EA</span><span>EA</span></div>
+      <div class="foot-marks" aria-hidden="true">
+        <span class="mark-l">EA</span>
+        <span>EA</span>
+      </div>
       <div class="foot-chips">
-        
         <a class="foot-chip" href="../../">Our Goal</a>
         <a class="foot-chip" href="../../start/">Start</a>
         <a class="foot-chip" href="../../capabilities/">Capabilities</a>
@@ -84,12 +107,14 @@
         <a class="foot-chip" href="../../llms.txt">llms.txt</a>
         <a class="foot-chip" href="../../our-goal.md">our-goal.md</a>
       </div>
-      <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.<br />Roadmap data © Microsoft — filtered for AI / agent relevance.</p>
+      <div class="foot-meta">
+        Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.<br />Built on Microsoft technologies.
+      </div>
     </div>
   </footer>
-  <div class="ambient-dock grain-hide-plain" aria-hidden="true"></div>
   <script src="../../assets/js/site-config.js"></script>
   <script src="../../assets/js/site.js"></script>
   <script src="../../assets/js/ambient.js"></script>
+
 </body>
 </html>

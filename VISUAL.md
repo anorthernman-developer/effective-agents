@@ -42,11 +42,11 @@
 
 | Role | Recommendation | Fallback stack |
 |------|----------------|----------------|
-| **Display / H1** | *Inter* or *IBM Plex Sans* **oversized grotesk** (prefer this over serif for closer TypeSafe vibe) | `system-ui, -apple-system, "Segoe UI", sans-serif` |
+| **Display / H1** | *Inter* or *IBM Plex Sans* **oversized grotesk** (prefer this over serif for a sharp editorial vibe) | `system-ui, -apple-system, "Segoe UI", sans-serif` |
 | **Body / nav** | *IBM Plex Sans* or *Inter* (sharp grotesk) | `system-ui, -apple-system, "Segoe UI", sans-serif` |
 | **Labels / footnotes / mono** | *JetBrains Mono* (small labels, appendix, foot chips) | `"IBM Plex Mono", "SF Mono", Consolas, monospace` |
 
-**Do not** use Die Grotesk or other licensed TypeSafe faces — Inter / IBM Plex Sans are the open stand-ins.
+**Do not** use proprietary third-party brand faces — Inter / IBM Plex Sans are the open stand-ins.
 
 Optional alternate: *Newsreader* for serif display if a print/PDF deck needs editorial warmth — web Our Goal prefers oversized grotesk H1.
 
@@ -65,7 +65,7 @@ Optional alternate: *Newsreader* for serif display if a print/PDF deck needs edi
 
 ---
 
-## Layout geometry (TypeSafe-derived → our black field)
+## Layout geometry (editorial → our black field)
 
 | Spec | Value | Notes |
 |------|-------|-------|
@@ -76,8 +76,8 @@ Optional alternate: *Newsreader* for serif display if a print/PDF deck needs edi
 | Vertical rules | 1px steel at ~28% opacity | Left edge of each content block |
 | Crop marks | 10×10px L-corners in `--steel-dim` | Around major blocks (hero, closing) |
 | Appendix width | Narrower (~34rem) | Mono footnotes under vertical rule |
-| Nav | **Non-sticky**; white/off-white rectangular chips on black | Invert of TypeSafe’s white-field chips |
-| Footer marks | `⊢ ∵` · `■ □` · `⊣` | Effective Agents registration marks (inspired by TypeSafe ∵ ⩆ — invent, don’t copy) |
+| Nav | **Non-sticky**; white/off-white rectangular chips on black | High-contrast chip nav on black field |
+| Footer marks | `EA` wordmarks | Effective Agents registration marks — invent, don’t copy third-party symbols |
 
 ### Rhythm
 
@@ -135,8 +135,8 @@ Three concepts (pick one for v1):
 - Soft drop shadows and pastel cards
 - Comic agents / robot mascots
 - Sticky nav (keep calm long-scroll)
-- Teal / purple / vaporwave hero imagery (TypeSafe palette)
-- Claiming Microsoft or TypeSafe visual identity
+- Teal / purple / vaporwave hero imagery (foreign palettes)
+- Claiming Microsoft or any third-party visual identity
 
 ---
 

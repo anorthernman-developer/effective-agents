@@ -120,19 +120,17 @@
   function resolveLegalHref() {
     const path = (location.pathname || '/').replace(/\/+$/, '') || '/';
     if (path === '/' || path.endsWith('/effective-agents')) return './legal/';
-    const depth = path.split('/').filter(Boolean).length;
-    // rough: if under /blog/slug/ depth 2+ from root
-    if (path.includes('/blog/') && path.split('/').filter(Boolean).length >= 2) {
-      return '../../legal/';
-    }
+    const segs = path.split('/').filter(Boolean);
+    // Nested capability lenses, blog posts, game v2
     if (
       path.includes('/game/v2') ||
-      path.includes('/blog/') ||
-      path.includes('/explore') ||
-      path.includes('/game') ||
-      path.includes('/legal')
+      (path.includes('/blog/') && segs.length >= 2) ||
+      (path.includes('/capabilities/') && segs.length >= 2)
     ) {
-      return path.includes('/game/v2') ? '../../legal/' : '../legal/';
+      return '../../legal/';
+    }
+    if (segs.length >= 1) {
+      return '../legal/';
     }
     return './legal/';
   }

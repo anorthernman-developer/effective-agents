@@ -10,6 +10,13 @@ Not affiliated with Microsoft or TypeSafe AI. Spelling: en-GB.
 - [Our Goal (HTML)](/): Primary thesis landing
 - [Our Goal (Markdown)](/our-goal.md): Plain markdown mirror
 - [Legacy redirect](/manifesto.md): Stub pointing to our-goal.md
+- [Start](/start/): Challenge funnel → recommended capability path
+- [Capabilities](/capabilities/): Hub for five lenses
+- [GRC](/capabilities/grc/): Governance, Risk & Compliance
+- [Licence & Value](/capabilities/licence-value/): Licence & Value Optimisation
+- [Processes](/capabilities/processes/): Effective Processes
+- [Agents](/capabilities/agents/): Building Effective Agents
+- [ROI](/capabilities/roi/): Maximising ROI
 - [Effective Insights](/insights/): Telemetry → defensible ROI narrative
 - [Effective Choice](/choice/): Augment / automate / leave be
 - [Effective Measurements](/measurements/): Board packs, evidence gates, anti-gaming

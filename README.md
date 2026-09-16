@@ -13,6 +13,8 @@ Spelling: **en-GB**.
 | Path | Purpose |
 |------|---------|
 | [`/`](./index.html) | Our Goal (home) |
+| [`/start/`](./start/) | Challenge funnel (typeform-style) → capability path |
+| [`/capabilities/`](./capabilities/) | Capability hub + five lenses (GRC, licence-value, processes, agents, ROI) |
 | [`/insights/`](./insights/) | Effective Insights — telemetry → ROI narrative |
 | [`/choice/`](./choice/) | Effective Choice — augment / automate / leave be |
 | [`/measurements/`](./measurements/) | Effective Measurements — board packs & gates |
@@ -87,4 +89,4 @@ Effective Agents is not affiliated with, endorsed by, or sponsored by Microsoft 
 
 ## Notable paths
 
-- `/` Our Goal · `/insights/` · `/choice/` · `/measurements/` · `/blog/` · `/explore/` · `/game/` (Agent Ops 1987) · `/game/v2/` · `/legal/`
+- `/` Our Goal · `/start/` · `/capabilities/` (+ `/grc/`, `/licence-value/`, `/processes/`, `/agents/`, `/roi/`) · `/insights/` · `/choice/` · `/measurements/` · `/blog/` · `/explore/` · `/game/` · `/game/v2/` · `/legal/` · see `AUDIT.md`
