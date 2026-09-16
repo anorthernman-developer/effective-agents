@@ -499,6 +499,30 @@ footer.site-foot .inner {
   max-width: calc(100% + var(--s3));
 }
 
+/* Supporting page art (section figures) — φ spacing, not wallpaper */
+.page-art {
+  display: block;
+  width: min(100%, 36rem);
+  margin: var(--s5) 0 var(--s4);
+  border: 1px solid var(--border);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.page-art--narrow {
+  width: min(100%, 28rem);
+  margin-left: 0;
+}
+.col.ruled .page-art,
+.prose-page .page-art {
+  margin-top: var(--s4);
+  margin-bottom: var(--s4);
+}
+.hero .hero-media {
+  /* keep under lede; rule-of-thirds weight already on .hero */
+  max-width: min(100%, 40rem);
+}
+
+
 .ambient-dock {
   position: fixed;
   bottom: var(--s3);
