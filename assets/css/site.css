@@ -532,6 +532,22 @@ svg.hero-art {
   margin-top: var(--s4);
 }
 
+/* Supporting art: cream plates read on both themes via border token */
+html[data-theme="light"] img.hero-art,
+html[data-theme="light"] img.section-art,
+html[data-theme="light"] .page-art {
+  border-color: rgba(10, 10, 10, 0.22);
+  box-shadow: 0 1px 0 rgba(10, 10, 10, 0.04);
+}
+html[data-theme="dark"] img.hero-art,
+html[data-theme="dark"] img.section-art,
+html[data-theme="dark"] .page-art,
+:root:not([data-theme="light"]) img.hero-art,
+:root:not([data-theme="light"]) img.section-art {
+  border-color: rgba(245, 242, 235, 0.14);
+}
+
+
 
 .ambient-dock {
   position: fixed;

@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const OUT_DIR = path.join(ROOT, 'assets', 'img', 'sections');
+const OUT_DIR = path.join(ROOT, 'assets', 'img');
 
 const GEMINI_IMAGE_MODELS = [
   'gemini-2.5-flash-image',
@@ -21,42 +21,42 @@ const IMAGES = [
   {
     name: 'our-goal-hero',
     subject:
-      'Abstract agents finishing real work: geometric workers closing loops and filing completed artefacts, outcomes over chat theatre, finished stacks not speech bubbles',
+      'Closed-loop agents delivering finished outcomes: geometric agents completing cycles and stacking finished artefacts, production outcomes not chat bubbles or speech balloons',
   },
   {
-    name: 'our-goal-intent',
+    name: 'our-goal-section',
     subject:
-      'Feedback loop and preference signals: human corrections flowing into agent improvement cycles, thumbs and arrows as abstract marks, closed loop geometry',
+      'Closed-loop outcomes system: circular feedback geometry with completed work stacks flowing into a governed loop, industrial editorial, no chat UI',
   },
   {
     name: 'insights-hero',
     subject:
-      'Abstract dashboards and adoption signals: hours and value as geometric bars and arcs, steel panels with red accents, no readable numbers or UI chrome',
+      'Telemetry flowing into a value lens: abstract signal streams converging through a circular lens into a dashboard abstraction of worth, steel panels, red accents',
   },
   {
-    name: 'insights-value',
+    name: 'insights-section',
     subject:
-      'Maturity and activation abstract: ascending stages from idle seats to skilled delegation, stepped platforms and rising bars in brand palette',
+      'Value lens dashboard abstraction: arcs and bars transforming raw telemetry into rising assisted-value geometry, no readable numbers or UI chrome',
   },
   {
     name: 'choice-hero',
     subject:
-      'Work mapping decision forks: three paths labelled only by shape — augment, automate, leave-be — branching from a work-flow spine, industrial editorial',
+      'Abstract workflow spine forking into three shape-coded routes: upper route of solid discs, middle route of interlocking cogs, lower route of quiet dashed track; pure geometry only',
   },
   {
-    name: 'choice-triage',
+    name: 'choice-section',
     subject:
-      'People, tasks and flows abstract: role silhouettes as simple blocks, task nodes and hand-off lines across a workflow map, flat industrial',
+      'Central node with three outgoing geometric arms: rising concentric arcs, horizontal cog train, downward quiet stub block; communicate by shape alone',
   },
   {
     name: 'measurements-hero',
     subject:
-      'Board pack and scorecard abstract: decision lenses as overlapping frames and scorecard grids, serious production systems mood, no readable text',
+      'Overlapping scorecard frames and board-pack panels as abstract rectangles and grids with red signal ticks; pure geometry, serious production mood',
   },
   {
-    name: 'measurements-chain',
+    name: 'measurements-section',
     subject:
-      'Measurement chain with risk beside performance: linked nodes from intent to decision pack, dual panes for value and risk as balanced geometry',
+      'Linked geometric nodes forming a measurement chain into dual balanced panes — rising bars versus jagged risk polygons — ending in stacked pack frames; pure geometry',
   },
 ];
 
@@ -142,7 +142,7 @@ function brandSvg(name, subject) {
   <circle cx="610" cy="100" r="18" fill="#E10600"/>
   <path d="M720 280 H980" stroke="#6B6560" stroke-width="2"/>
   <path d="M960 260 L980 280 L960 300" stroke="#E10600" stroke-width="3" fill="none"/>`,
-    'our-goal-intent': `
+    'our-goal-section': `
   <circle cx="400" cy="315" r="120" fill="none" stroke="#A8A29A" stroke-width="3"/>
   <circle cx="400" cy="315" r="70" fill="none" stroke="#6B6560" stroke-width="2"/>
   <path d="M400 195 A120 120 0 0 1 520 315" stroke="#E10600" stroke-width="6" fill="none"/>
@@ -158,7 +158,7 @@ function brandSvg(name, subject) {
   <rect x="520" y="220" width="40" height="240" fill="#F5F2EB"/>
   <path d="M620 400 Q700 200 780 280 T940 240" stroke="#E10600" stroke-width="3" fill="none"/>
   <circle cx="940" cy="240" r="8" fill="#E10600"/>`,
-    'insights-value': `
+    'insights-section': `
   <rect x="200" y="400" width="160" height="80" fill="#1a1a1a" stroke="#6B6560"/>
   <rect x="400" y="320" width="160" height="160" fill="#161616" stroke="#A8A29A"/>
   <rect x="600" y="220" width="160" height="260" fill="#141414" stroke="#A8A29A"/>
@@ -173,7 +173,7 @@ function brandSvg(name, subject) {
   <rect x="720" y="150" width="100" height="60" fill="#1a1a1a" stroke="#F5F2EB"/>
   <rect x="720" y="285" width="100" height="60" fill="#1a1a1a" stroke="#E10600" stroke-width="3"/>
   <rect x="720" y="420" width="100" height="60" fill="#1a1a1a" stroke="#6B6560"/>`,
-    'choice-triage': `
+    'choice-section': `
   <rect x="180" y="180" width="60" height="100" fill="#1a1a1a" stroke="#F5F2EB"/>
   <rect x="180" y="320" width="60" height="100" fill="#1a1a1a" stroke="#A8A29A"/>
   <rect x="180" y="460" width="60" height="60" rx="30" fill="#1a1a1a" stroke="#6B6560"/>
@@ -192,7 +192,7 @@ function brandSvg(name, subject) {
   <line x1="740" y1="200" x2="960" y2="200" stroke="#6B6560"/>
   <line x1="740" y1="280" x2="920" y2="280" stroke="#A8A29A"/>
   <line x1="740" y1="360" x2="880" y2="360" stroke="#E10600" stroke-width="3"/>`,
-    'measurements-chain': `
+    'measurements-section': `
   <circle cx="220" cy="315" r="40" fill="#1a1a1a" stroke="#E10600" stroke-width="3"/>
   <circle cx="400" cy="315" r="40" fill="#1a1a1a" stroke="#A8A29A" stroke-width="2"/>
   <circle cx="580" cy="315" r="40" fill="#1a1a1a" stroke="#A8A29A" stroke-width="2"/>
@@ -213,13 +213,12 @@ function brandSvg(name, subject) {
   <path d="M40 635 H60 M40 635 V615" stroke="#6B6560" stroke-width="1" fill="none"/>
   <path d="M1140 635 H1160 M1160 635 V615" stroke="#6B6560" stroke-width="1" fill="none"/>
   ${art}
-  <text x="48" y="640" fill="#6B6560" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3">EFFECTIVE AGENTS</text>
-</svg>`;
+  </svg>`;
 }
 
 async function maybeGeminiImage(name, subject) {
   if (!geminiKey()) return null;
-  const prompt = `Minimal industrial editorial illustration, flat vector, palette only #E10600 #0A0A0A #F5F2EB and steel greys. Abstract enterprise agents theme. No logos. No readable text. Mood: serious production systems. 16:9 landscape. Subject hint: ${subject.slice(0, 200)}`;
+  const prompt = `Minimal industrial editorial illustration, flat vector, palette ONLY #E10600 #0A0A0A #F5F2EB and steel greys. Abstract enterprise systems. CRITICAL RULE: the image must contain ZERO typography — no alphabet characters, no numerals, no captions, no annotations, no watermarks. Communicate only with shapes, lines, and colour. Mood: serious production systems. 16:9. Subject: ${subject.slice(0, 200)}`;
   const bodies = [
     {
       contents: [{ parts: [{ text: prompt }] }],
@@ -267,7 +266,9 @@ async function main() {
   const hasKey = !!geminiKey();
   console.log(`GEMINI key: ${hasKey ? 'present' : 'missing'}`);
   const results = [];
+  const only = (process.env.ONLY || '').split(',').map(s => s.trim()).filter(Boolean);
   for (const img of IMAGES) {
+    if (only.length && !only.includes(img.name)) continue;
     let file = null;
     if (hasKey) {
       file = await maybeGeminiImage(img.name, img.subject);

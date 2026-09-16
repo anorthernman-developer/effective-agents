@@ -2,7 +2,7 @@
 
 **Ship Outcomes, Not Chat**
 
-![Abstract closed-loop agents completing work outcomes](./assets/img/sections/our-goal-hero.png)
+![Abstract closed-loop agents completing work outcomes](./assets/img/our-goal-hero.png)
 
 ---
 
@@ -12,7 +12,7 @@ Make enterprise intelligence **effective**: agents that finish work inside Micro
 
 We are not chasing a model that can discuss everything. We are shipping agents that can **do** the next useful thing — under identity, policy, and audit — then get better from the people who correct them.
 
-![Intent-to-governance stack as layered abstract geometry](./assets/img/sections/our-goal-intent.png)
+![Closed-loop outcomes as layered abstract geometry](./assets/img/our-goal-section.png)
 
 ---
 
