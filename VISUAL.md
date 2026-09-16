@@ -1,10 +1,10 @@
 # Effective Agents — Visual System
 
-**Direction:** Clean editorial manifesto energy with a raw, high-contrast, ink-on-steel edge. Red / black / white. Not pastel. Slightly “greasy” = industrial grit, not grunge clutter.
+**Direction:** Clean editorial statement energy with a raw, high-contrast, ink-on-steel edge. Red / black / white. Not pastel. Slightly “greasy” = industrial grit, not grunge clutter.
 
 **Primary tagline:** Ship Outcomes, Not Chat
 
-**Layout lineage:** TypeSafe manifesto *geometry and vibe* (gutters, crop marks, oversized grotesk H1, mono labels, vertical rules, footer symbols) adapted to our palette — never their teal/purple, never proprietary fonts.
+**Layout lineage:** Original editorial geometry: gutters, crop marks, oversized grotesk H1, mono labels, vertical rules, and footer symbols. Red / black / white; never another brand’s palette or proprietary fonts.
 
 ---
 
@@ -25,7 +25,7 @@
 
 ### Combinations
 
-- **Manifesto page:** `--black` bg · `--white` body · `--red` for H1 accent words, links, last-words rule, label ticks  
+- **Our Goal page:** `--black` bg · `--white` body · `--red` for H1 accent words, links, closing rule, label ticks
 - **Print / PDF:** Black type on `--white` paper; red for section ticks only  
 - **UI chrome:** Black panels, steel labels, red for primary button and focus ring  
 
@@ -38,7 +38,7 @@
 
 ## Typography
 
-### Editorial manifesto pair (TypeSafe-mapped, open fonts)
+### Editorial statement pair (open fonts)
 
 | Role | Recommendation | Fallback stack |
 |------|----------------|----------------|
@@ -48,9 +48,9 @@
 
 **Do not** use Die Grotesk or other licensed TypeSafe faces — Inter / IBM Plex Sans are the open stand-ins.
 
-Optional alternate: *Newsreader* for serif display if a print/PDF deck needs editorial warmth — web manifesto prefers oversized grotesk H1.
+Optional alternate: *Newsreader* for serif display if a print/PDF deck needs editorial warmth — web Our Goal prefers oversized grotesk H1.
 
-### Scale (web manifesto)
+### Scale (web Our Goal)
 
 | Step | Size | Weight | Tracking |
 |------|------|--------|----------|
@@ -70,11 +70,11 @@ Optional alternate: *Newsreader* for serif display if a print/PDF deck needs edi
 | Spec | Value | Notes |
 |------|-------|-------|
 | Outer gutters | **~30px** (`--gutter`) | Letterbox frame; 20px on narrow viewports |
-| Main reading column | **~800px** centered | Long-scroll manifesto, calm text-led |
+| Main reading column | **~800px** centered | Long-scroll Our Goal, calm text-led |
 | Paragraph spacing | **~20px** | Label → gap → text rhythm |
 | Section spacing | **~50px** | Between ruled blocks |
 | Vertical rules | 1px steel at ~28% opacity | Left edge of each content block |
-| Crop marks | 10×10px L-corners in `--steel-dim` | Around major blocks (hero, last words) |
+| Crop marks | 10×10px L-corners in `--steel-dim` | Around major blocks (hero, closing) |
 | Appendix width | Narrower (~34rem) | Mono footnotes under vertical rule |
 | Nav | **Non-sticky**; white/off-white rectangular chips on black | Invert of TypeSafe’s white-field chips |
 | Footer marks | `⊢ ∵` · `■ □` · `⊣` | Effective Agents registration marks (inspired by TypeSafe ∵ ⩆ — invent, don’t copy) |
@@ -86,7 +86,7 @@ Optional alternate: *Newsreader* for serif display if a print/PDF deck needs edi
 3. H2 / body  
 4. ~50px air before next ruled block  
 
-Large title at **start** (hero H1) **and** **end** (last-words H1 reprise).
+Large title at **start** (hero H1) **and** **end** (closing H1 reprise).
 
 ---
 
@@ -126,8 +126,8 @@ Three concepts (pick one for v1):
 - Generous whitespace (30px gutters; 800px column)
 - Hairline vertical rules + crop marks on major blocks
 - Section labels in JetBrains Mono uppercase before each H2
-- Oversized grotesk H1 at hero and last words
-- Red used for: links, emphasis words, primary CTA, label ticks, last-words rule
+- Oversized grotesk H1 at hero and closing
+- Red used for: links, emphasis words, primary CTA, label ticks, closing rule
 - Slight texture optional: 2–4% scan/noise overlay on black (“greasy steel”)
 
 ### Don’t
@@ -140,7 +140,7 @@ Three concepts (pick one for v1):
 
 ---
 
-## UI chrome notes (manifesto site)
+## UI chrome notes (Our Goal site)
 
 | Element | Spec |
 |---------|------|
@@ -174,7 +174,7 @@ Keep grit subordinate to type.
 
 ## Reference archive
 
-TypeSafe geometry references (palette **not** adopted) live at:
+Archived layout references (palette **not** adopted) live at:
 
 `previews/typesafe-ref/`
 
@@ -191,7 +191,7 @@ Use for spacing / crop / rule / chip geometry only.
 
 ## Application checklist
 
-- [x] Manifesto landing (`index.html`) — TypeSafe geometry + EA red/black/white  
+- [x] Our Goal landing (`index.html`) — original editorial geometry + EA red/black/white
 - [ ] Slide master: black title slides, white content slides, red accent bar left  
 - [ ] Proposal PDF: grotesk titles, grotesk body, red section ticks  
 - [ ] Favicon: signal bar or EA stamp on black  

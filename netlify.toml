@@ -1,6 +1,6 @@
 [build]
   publish = "."
-  command = "echo 'Static manifesto site — no build step'"
+  command = "echo 'Static Our Goal site — no build step'"
 
 [[headers]]
   for = "/*"

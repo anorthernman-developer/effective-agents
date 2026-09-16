@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Effective Choice — Effective Agents</title>
+  <meta name="description" content="Work-understanding first: map how work gets done, by whom, and which tasks — then augment, automate, or leave be." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/site.css" />
+  <script src="../assets/js/theme-boot.js"></script>
+  <style>
+    .steps {
+      list-style: none; padding: 0; margin: 1.75rem 0 0; counter-reset: step;
+    }
+    .steps li {
+      position: relative; padding: 1.35rem 0 1.35rem 3rem;
+      border-top: 1px solid var(--border); counter-increment: step;
+    }
+    .steps li:last-child { border-bottom: 1px solid var(--border); }
+    .steps li::before {
+      content: counter(step, decimal-leading-zero);
+      position: absolute; left: 0; top: 1.4rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.08em; color: var(--red);
+    }
+    .steps h3 { margin: 0 0 0.45rem; font-size: 1.05rem; }
+    .steps p { margin: 0; color: var(--muted); font-size: 0.95em; }
+    .compare {
+      width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9em;
+    }
+    .compare th, .compare td {
+      text-align: left; padding: 0.8rem 0.65rem;
+      border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+    .compare th {
+      font-family: var(--font-mono); font-size: 0.625rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
+    }
+    .compare td:first-child { color: var(--muted-dim); }
+    .compare td:last-child { color: var(--fg); }
+    blockquote.pull em { font-style: italic; color: var(--muted); }
+    .closing {
+      font-family: var(--font-mono); letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--red); margin-top: 1.5rem;
+    }
+    .appendix {
+      padding: 0 0 2rem; font-size: 0.72rem; line-height: 1.55; color: var(--muted);
+    }
+    .appendix li { margin-bottom: 0.75rem; }
+    .appendix a { color: var(--muted); }
+    .sup {
+      font-family: var(--font-mono); font-size: 0.65em;
+      color: var(--red); vertical-align: super; margin-left: 0.08em;
+    }
+    .hero h1 { font-size: clamp(2.75rem, 1.4rem + 5.5vw, 5.25rem); }
+    .prose-page .block h2 { margin-top: 0; }
+    @media (max-width: 560px) {
+      .compare { display: block; overflow-x: auto; }
+    }
+
+  </style>
+</head>
+<body>
+      <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a class="chip chip--brand" href="../">Effective <span>Agents</span></a>
+      <div class="nav-cluster nav-cluster--links">
+        <a class="chip" href="../">Our Goal</a>
+        <a class="chip" href="../insights/">Insights</a>
+        <a class="chip chip--active" href="../choice/">Choice</a>
+        <a class="chip" href="../measurements/">Measurements</a>
+        <a class="chip" href="../blog/">Blog</a>
+        <a class="chip" href="../explore/">Explore</a>
+        <a class="chip" href="../game/">Game</a>
+        <a class="chip" href="../legal/">Legal</a>
+      </div>
+      <div class="nav-cluster">
+        <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero page">
+    <div class="col framed">
+      <span class="crop-bl" aria-hidden="true"></span>
+      <span class="crop-br" aria-hidden="true"></span>
+      <p class="label">Choice</p>
+      <h1>Effective <em>Choice</em></h1>
+      <p class="tagline">Ship Outcomes, Not Chat</p>
+      <p class="lede">Before you build another agent, understand the work. Map how work gets done, by whom, and which tasks move value — then work backwards to decide what to augment, automate, or leave be.</p>
+    </div>
+  </header>
+
+  <main class="page prose-page">
+    <div class="col ruled block">
+<p>Before you build another agent, <strong>understand the work</strong>. Map how work gets done, by whom, and which tasks move value — then work backwards to decide what to <strong>augment</strong>, <strong>automate</strong>, or <strong>leave be</strong>.</p>
+<p>A related perspective on organisational understanding as a discipline sits at <a href="https://organisationalunderstanding.com">organisationalunderstanding.com</a>. Effective Agents offers a concrete method tuned to Microsoft 365 agents and Copilot programmes.</p>
+<h2>The Effective Choice method</h2>
+<h3>1. Inventory how work gets done</h3>
+<p>List the recurring flows that matter: intake → decide → produce → approve → file → notify. Capture systems of record (SharePoint libraries, lists, Dynamics, Service desks), artefacts, and SLAs. Ignore “nice chat ideas” until the flow is visible.</p>
+<h3>2. Map who does which tasks</h3>
+<p>For each step: role, volume, cycle time, error cost, and judgement intensity. Note hand-offs — agents fail most often at the seams between teams.</p>
+<h3>3. Score candidates (backwards from outcomes)</h3>
+<p>Work <strong>backwards from the done state</strong>. Ask:</p>
+<table class="compare">
+<tr><th>Question</th><th>Prefer</th></tr>
+<tr><td>What must be true when we stop?</td><td>A filed artefact, updated case, recorded approval</td></tr>
+<tr><td>Where does judgement concentrate?</td><td>Keep humans; augment with drafts and retrieval</td></tr>
+<tr><td>Where is volume high and rules clear?</td><td>Automate with governed actions</td></tr>
+<tr><td>Where is risk or rarity extreme?</td><td>Leave be — or human-only with better tooling</td></tr>
+</table>
+<h3>4. Choose the intervention</h3>
+<table class="compare">
+<tr><th>Choice</th><th>When</th><th>Typical Microsoft shape</th></tr>
+<tr><td><strong>Augment</strong></td><td>Humans stay accountable; AI accelerates drafts, search, triage</td><td>Copilot in apps; SharePoint agents for grounded Q&amp;A with citations</td></tr>
+<tr><td><strong>Automate</strong></td><td>Clear rules, reversible or gated actions, measurable completion</td><td>Copilot Studio / Agent Builder with connectors, approvals, audit</td></tr>
+<tr><td><strong>Leave be</strong></td><td>High stakes, low volume, weak data, or political fragility</td><td>Improve process / training first; revisit later</td></tr>
+</table>
+<p>Build vs buy vs agent vs human is a <strong>portfolio</strong> decision, not a slogan. Many “agent” requests are really SharePoint hygiene, permissions, or workflow debt.</p>
+<h2>Backwards design checklist</h2>
+<ol>
+<li>1. Write the outcome in business language (Intent).</li>
+<li>2. Name the owner and runtime (Agent).</li>
+<li>3. Bound what it may know (Grounding — Graph, labels, ACLs).</li>
+<li>4. Bound what it may change (Action — connectors, human gates).</li>
+<li>5. Define how preference corrects it (Feedback).</li>
+<li>6. Define who may deploy, watch, and kill it (Governance).</li>
+</ol>
+<p>If you cannot complete the chain, you do not yet have an agent candidate — you have a chat wish.</p>
+<h2>Anti-patterns</h2>
+<ul>
+<li>Starting from a blank chat window and hunting for a use case.</li>
+<li>Automating the noisiest meeting instead of the clearest workflow.</li>
+<li>Measuring success as “people opened Copilot” instead of “the case closed faster”.</li>
+<li>Skipping leave-be: not every task deserves an agent.</li>
+</ul>
+<h2>How Choice feeds Insights and Measurements</h2>
+<p>Choice decides <em>where</em> to place agents. Insights show whether activation and maturity follow. Measurements prove board-grade value and risk. Together they keep programmes honest: <strong>Ship Outcomes, Not Chat.</strong></p>
+<p><strong>Next:</strong> <a href="../insights/">Effective Insights</a> · <a href="../measurements/">Effective Measurements</a> · <a href="../">Our Goal</a></p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="inner">
+      <div class="foot-marks" aria-hidden="true">
+        <span class="mark-l">EA</span>
+        <span>EA</span>
+      </div>
+      <div class="foot-chips">
+        <a class="foot-chip" href="../">Our Goal</a>
+        <a class="foot-chip" href="../insights/">Insights</a>
+        <a class="foot-chip" href="../choice/">Choice</a>
+        <a class="foot-chip" href="../measurements/">Measurements</a>
+        <a class="foot-chip" href="../blog/">Blog</a>
+        <a class="foot-chip" href="../explore/">Explore</a>
+        <a class="foot-chip" href="../game/">Game</a>
+        <a class="foot-chip" href="../legal/">Legal</a>
+        <a class="foot-chip" href="../game/v2/">Game V2</a>
+        <a class="foot-chip" href="../legal/#cookies">Cookies</a>
+        <a class="foot-chip" href="../legal/#tip">Tip</a>
+        <a class="foot-chip" href="../llms.txt">llms.txt</a>
+        <a class="foot-chip" href="../our-goal.md">our-goal.md</a>
+      </div>
+      <div class="foot-meta">
+        Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.<br />Built on Microsoft technologies.
+      </div>
+    </div>
+  </footer>
+  <script src="../assets/js/site-config.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/ambient.js"></script>
+</body>
+</html>

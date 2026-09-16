@@ -202,8 +202,8 @@
       });
     });
 
-    // Manifesto section markers
-    document.querySelectorAll('main section.block, main section.last-words').forEach((sec, i) => {
+    // Our Goal section markers
+    document.querySelectorAll('main section.block').forEach((sec, i) => {
       if (sec.querySelector('.sect-mark')) return;
       const mark = document.createElement('span');
       mark.className = 'sect-mark';

@@ -6,3 +6,4 @@ node_modules/
 *.log
 previews/
 .netlify/
+_sources/

@@ -12,18 +12,22 @@ Spelling: **en-GB**.
 
 | Path | Purpose |
 |------|---------|
-| [`/`](./index.html) | Manifesto home |
+| [`/`](./index.html) | Our Goal (home) |
+| [`/insights/`](./insights/) | Effective Insights — telemetry → ROI narrative |
+| [`/choice/`](./choice/) | Effective Choice — augment / automate / leave be |
+| [`/measurements/`](./measurements/) | Effective Measurements — board packs & gates |
 | [`/blog/`](./blog/) | Short roadmap articles (what / does / worry / means for users) |
 | [`/explore/`](./explore/) | Interactive filtered roadmap — pin & personalise (`localStorage`) |
 | [`/game/`](./game/) | Vintage retro turn-by-turn humorous game on the same dataset |
-| [`/manifesto.md`](./manifesto.md) | Markdown manifesto mirror |
+| [`/our-goal.md`](./our-goal.md) | Markdown Our Goal mirror |
+| [`/manifesto.md`](./manifesto.md) | Redirect stub → our-goal.md |
 | [`/llms.txt`](./llms.txt) | Machine-readable site map |
 | [`/data/roadmap-ai.json`](./data/roadmap-ai.json) | Cached filtered M365 AI/agent roadmap (offline-friendly) |
 | [`sitemap.xml`](./sitemap.xml) / [`robots.txt`](./robots.txt) | Crawlers |
 
 **Modes:** light/dark (persisted), plain-text mode, quiet Web Audio ambient (user-start + mute).
 
-**Brand kit (docs):** [BRAND.md](./BRAND.md) · [MANIFESTO.md](./MANIFESTO.md) · [FRAMEWORK.md](./FRAMEWORK.md) · [BUSINESS.md](./BUSINESS.md) · [VISUAL.md](./VISUAL.md) · [TAGLINES.md](./TAGLINES.md)
+**Brand kit (docs):** [BRAND.md](./BRAND.md) · [OUR-GOAL.md](./OUR-GOAL.md) · [FRAMEWORK.md](./FRAMEWORK.md) · [BUSINESS.md](./BUSINESS.md) · [VISUAL.md](./VISUAL.md) · [TAGLINES.md](./TAGLINES.md)
 
 ---
 
@@ -83,5 +87,4 @@ Effective Agents is not affiliated with, endorsed by, or sponsored by Microsoft 
 
 ## Notable paths
 
-- `/` manifesto · `/blog/` · `/explore/` · `/game/` (Agent Ops 1987) · `/game/v2/` · `/legal/`
-
+- `/` Our Goal · `/insights/` · `/choice/` · `/measurements/` · `/blog/` · `/explore/` · `/game/` (Agent Ops 1987) · `/game/v2/` · `/legal/`

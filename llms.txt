@@ -7,13 +7,18 @@ Not affiliated with Microsoft or TypeSafe AI. Spelling: en-GB.
 
 ## Site map
 
-- [Manifesto (HTML)](/): Primary manifesto landing
-- [Manifesto (Markdown)](/manifesto.md): Plain markdown mirror
+- [Our Goal (HTML)](/): Primary thesis landing
+- [Our Goal (Markdown)](/our-goal.md): Plain markdown mirror
+- [Legacy redirect](/manifesto.md): Stub pointing to our-goal.md
+- [Effective Insights](/insights/): Telemetry → defensible ROI narrative
+- [Effective Choice](/choice/): Augment / automate / leave be
+- [Effective Measurements](/measurements/): Board packs, evidence gates, anti-gaming
 - [Blog](/blog/): Short articles on filtered M365 AI/agent roadmap items
 - [Explore](/explore/): Interactive installation — pin/personalise (localStorage)
 - [Game](/game/): Vintage retro turn-by-turn humorous game on the same dataset
+- [Legal](/legal/): AI disclosure, cookies, tip
 - [Roadmap cache (JSON)](/data/roadmap-ai.json): Filtered AI/agent items from 1 Sept 2026+
-- [Brand kit](/BRAND.md), [Framework](/FRAMEWORK.md), [Visual](/VISUAL.md), [Business](/BUSINESS.md)
+- [Brand kit](/BRAND.md), [Our Goal doc](/OUR-GOAL.md), [Framework](/FRAMEWORK.md), [Visual](/VISUAL.md), [Business](/BUSINESS.md)
 
 ## Blog mirrors
 

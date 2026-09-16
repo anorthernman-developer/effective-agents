@@ -99,7 +99,7 @@ Adjust for partner margin, public sector, and multi-geo. Prefer fixed + success 
 ### Channels
 - Direct to CIO / CoE
 - Microsoft partner co-sell (position as delivery accelerators on Copilot Studio, Agent Builder, Foundry, SharePoint)
-- Workshops / manifesto landing (index.html) as top-of-funnel
+- Workshops / Our Goal landing (index.html) plus Insights, Choice, Measurements as top-of-funnel
 - Case studies framed as **before/after metrics**, not feature tours
 
 ### Messaging hierarchy

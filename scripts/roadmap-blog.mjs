@@ -510,11 +510,14 @@ function sharedNav(prefix = '../..', active = '') {
     <div class="inner">
       <a class="chip chip--brand" href="${prefix}/">Effective <span>Agents</span></a>
       <div class="nav-cluster nav-cluster--links">
-        ${a('Manifesto', '/')}
+        ${a('Our Goal', '/')}
+        ${a('Insights', '/insights/')}
+        ${a('Choice', '/choice/')}
+        ${a('Measurements', '/measurements/')}
         ${a('Blog', '/blog/')}
         ${a('Explore', '/explore/')}
         ${a('Game', '/game/')}
-        ${a('Game V2', '/game/v2/')}
+        ${a('Legal', '/legal/')}
       </div>
       <div class="nav-cluster">
         <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
@@ -531,16 +534,19 @@ function sharedFoot(prefix = '../..') {
     <div class="inner">
       <div class="foot-marks"><span class="mark-l">EA</span><span>EA</span></div>
       <div class="foot-chips">
-        <a class="foot-chip" href="${prefix}/">Manifesto</a>
+        <a class="foot-chip" href="${prefix}/">Our Goal</a>
+        <a class="foot-chip" href="${prefix}/insights/">Insights</a>
+        <a class="foot-chip" href="${prefix}/choice/">Choice</a>
+        <a class="foot-chip" href="${prefix}/measurements/">Measurements</a>
         <a class="foot-chip" href="${prefix}/blog/">Blog</a>
         <a class="foot-chip" href="${prefix}/explore/">Explore</a>
         <a class="foot-chip" href="${prefix}/game/">Game</a>
-        <a class="foot-chip" href="${prefix}/game/v2/">Game V2</a>
         <a class="foot-chip" href="${prefix}/legal/">Legal</a>
+        <a class="foot-chip" href="${prefix}/game/v2/">Game V2</a>
         <a class="foot-chip" href="${prefix}/legal/#cookies">Cookies</a>
         <a class="foot-chip" href="${prefix}/legal/#tip">Tip</a>
         <a class="foot-chip" href="${prefix}/llms.txt">llms.txt</a>
-        <a class="foot-chip" href="${prefix}/manifesto.md">manifesto.md</a>
+        <a class="foot-chip" href="${prefix}/our-goal.md">our-goal.md</a>
       </div>
       <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.<br />Roadmap data © Microsoft — filtered for AI / agent relevance.</p>
     </div>

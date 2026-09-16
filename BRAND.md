@@ -26,7 +26,7 @@ Effective Agents helps Microsoft-centric organisations turn Copilot, SharePoint,
 
 We reclaim **RLHF** (reinforcement learning from human feedback) as the enterprise feedback loop: preference signals from real work in Microsoft 365 train and steer agents that complete tasks, escalate when unsure, and get better every week.
 
-We are **not** affiliated with Microsoft or with TypeSafe AI. We build on Microsoft technologies and share a manifesto-grade seriousness about production intelligence — with a different thesis: chat is fine as a surface; **effectiveness** is the product.
+We are **not** affiliated with Microsoft or with TypeSafe AI. We build on Microsoft technologies and share a production-grade seriousness about enterprise intelligence — with a different thesis: chat is fine as a surface; **effectiveness** is the product.
 
 | Dimension | Effective Agents |
 |-----------|------------------|
@@ -89,7 +89,7 @@ We are **not** affiliated with Microsoft or with TypeSafe AI. We build on Micros
 TypeSafe argues RLHF-trained chat models optimise for human-pleasing conversation and keep humans in the loop as a crutch. Effective Agents **reclaims** that loop: in the enterprise, human preference *is* the signal that steers agents toward outcomes inside Microsoft 365. We are not building a new model lab. We are building the practice, patterns, and product lines that make Microsoft’s agent stack **effective**.
 
 ### vs generic Copilot chat / “ask me anything” bots
-Chat-on-your-docs is a horseless carriage: a familiar interface dragged onto enterprise knowledge. Useful for Q&A; insufficient for work that must be filed, approved, routed, or measured. We sell composition, grounding, action, feedback, and governance — not another prompt pack.
+Chat-on-your-docs is decorative intelligence: a familiar pane dragged onto enterprise knowledge. Useful for Q&A; insufficient for work that must be filed, approved, routed, or measured. We sell composition, grounding, action, feedback, and governance — not another prompt pack.
 
 ### vs pure custom LLM apps outside M365
 Greenfield agent frameworks ignore where work already lives. Our bet: effectiveness compounds when agents sit in SharePoint, Teams, and Copilot — under the same identity, Purview, and audit plane the organisation already runs.
@@ -113,3 +113,15 @@ We are concrete: named layers, named Microsoft products, named metrics. Advisory
 ## Brand promise (internal)
 
 > We make Microsoft agents effective: composed on the stack you already own, improved by the people who do the work, and measured by outcomes — not chat volume.
+
+
+---
+
+## Site sections (public)
+
+| Section | Promise |
+|---------|---------|
+| **Our Goal** | Thesis: ship outcomes on the Microsoft agent stack |
+| **Effective Insights** | Telemetry → defensible ROI narrative |
+| **Effective Choice** | Map work → augment / automate / leave be |
+| **Effective Measurements** | Decision-first packs, evidence gates, anti-gaming |

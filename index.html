@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Effective Agents — Ship Outcomes, Not Chat</title>
-  <meta name="description" content="Intelligence that works inside the tools people already use. Agents composed, governed, measurable, and improved by human feedback on Microsoft’s agent stack." />
+  <meta name="description" content="Our goal: intelligence that works inside the tools people already use. Agents composed, governed, measurable, and improved by human feedback on Microsoft’s agent stack." />
   <meta name="theme-color" content="#0A0A0A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="./assets/css/site.css" />
   <script src="./assets/js/theme-boot.js"></script>
   <style>
-    /* Manifesto page extras */
     .steps {
       list-style: none; padding: 0; margin: 1.75rem 0 0; counter-reset: step;
     }
@@ -44,11 +43,6 @@
     .compare td:first-child { color: var(--muted-dim); }
     .compare td:last-child { color: var(--fg); }
     blockquote.pull em { font-style: italic; color: var(--muted); }
-    .last-words { padding: 0 0 var(--sect); }
-    .last-words h1 { font-size: clamp(2rem, 1.1rem + 3.5vw, 3.25rem); }
-    .last-words .rule {
-      border: none; border-top: 1px solid var(--border); margin: 0 0 1.5rem;
-    }
     .closing {
       font-family: var(--font-mono); letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--red); margin-top: 1.5rem;
@@ -63,21 +57,26 @@
       color: var(--red); vertical-align: super; margin-left: 0.08em;
     }
     .hero h1 { font-size: clamp(2.75rem, 1.4rem + 5.5vw, 5.25rem); }
+    .prose-page .block h2 { margin-top: 0; }
     @media (max-width: 560px) {
       .compare { display: block; overflow-x: auto; }
     }
+
   </style>
 </head>
 <body>
-  <nav class="site-nav" aria-label="Primary">
+      <nav class="site-nav" aria-label="Primary">
     <div class="inner">
       <a class="chip chip--brand" href="./">Effective <span>Agents</span></a>
       <div class="nav-cluster nav-cluster--links">
-        <a class="chip chip--active" href="./">Manifesto</a>
+        <a class="chip chip--active" href="./">Our Goal</a>
+        <a class="chip" href="./insights/">Insights</a>
+        <a class="chip" href="./choice/">Choice</a>
+        <a class="chip" href="./measurements/">Measurements</a>
         <a class="chip" href="./blog/">Blog</a>
         <a class="chip" href="./explore/">Explore</a>
         <a class="chip" href="./game/">Game</a>
-        <a class="chip" href="./game/v2/">Game V2</a>
+        <a class="chip" href="./legal/">Legal</a>
       </div>
       <div class="nav-cluster">
         <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
@@ -93,23 +92,23 @@
     <div class="col framed">
       <span class="crop-bl" aria-hidden="true"></span>
       <span class="crop-br" aria-hidden="true"></span>
-      <p class="label">Manifesto</p>
+      <p class="label">Our Goal</p>
       <h1>Intelligence that <em>works</em> — inside the tools people already use.</h1>
       <p class="tagline">Ship Outcomes, Not Chat</p>
       <p class="lede">
         Agents composed, governed, measurable, and improved by human feedback on Microsoft’s agent stack.
-        Not chat theatre. Not a god-model. Work that finishes.<span class="sup" id="ref1"><a href="#fn1">1</a></span>
+        Not chat theatre. Work that finishes.<span class="sup" id="ref1"><a href="#fn1">1</a></span>
       </p>
     </div>
   </header>
 
   <main class="page">
-    <section class="block" id="mission">
+    <section class="block" id="goal">
       <div class="col ruled">
-        <p class="label">01 — Mission</p>
+        <p class="label">01 — The goal</p>
         <h2>Make enterprise intelligence effective.</h2>
         <p>
-          Our mission is to ship agents that finish work inside Microsoft 365 —
+          Our goal is to ship agents that finish work inside Microsoft 365 —
           composed from Intent to Governance, grounded in SharePoint and Graph,
           steered by human preference, and measured by outcomes rather than conversation volume.
         </p>
@@ -121,9 +120,9 @@
       </div>
     </section>
 
-    <section class="block" id="factory">
+    <section class="block" id="workbench">
       <div class="col ruled">
-        <p class="label">02 — We already have the factory floor</p>
+        <p class="label">02 — The estate is already a workbench</p>
         <h2>The machinery is already running.</h2>
         <p>
           Enterprises already own identity that knows who may see what;
@@ -142,21 +141,20 @@
       </div>
     </section>
 
-    <section class="block" id="carriage">
+    <section class="block" id="decorative">
       <div class="col ruled">
-        <p class="label">03 — The horseless carriage</p>
-        <h2>Stop bolting chat onto the intranet.</h2>
+        <p class="label">03 — Decorative vs effective</p>
+        <h2>Stop mistaking the pane for the work order.</h2>
         <p>
-          Early cars looked like carriages with engines attached.
-          Early enterprise AI looks like chatbots bolted onto institutional knowledge.
+          Too many programmes stop at a familiar shape: a conversation pane sitting on institutional knowledge.
           Users ask. The bot answers. Someone still copies the answer into the form,
           the ticket, the policy pack, the approval chain.
         </p>
         <p>That is decorative intelligence — useful for discovery, weak for delivery.</p>
-        <table class="compare" aria-label="Chatbot versus effective agent">
+        <table class="compare" aria-label="Decorative intelligence versus effective agent">
           <thead>
             <tr>
-              <th>Chatbot bolted on</th>
+              <th>Decorative intelligence</th>
               <th>Effective agent</th>
             </tr>
           </thead>
@@ -183,16 +181,16 @@
             </tr>
           </tbody>
         </table>
-        <p>The carriage was never the point. Transport was. Conversation was never the point. <strong>Outcomes</strong> are.</p>
+        <p>Conversation was never the unit of value. <strong>Outcomes</strong> are.</p>
       </div>
     </section>
 
-    <section class="block" id="rlhf">
+    <section class="block" id="preference">
       <div class="col ruled">
-        <p class="label">04 — RLHF, reclaimed</p>
+        <p class="label">04 — Preference as signal</p>
         <h2>Human preference is not a crutch. It is the signal.</h2>
         <p>
-          A common critique says RLHF produces chatty, human-pleasing models that need humans in the loop forever.
+          A common critique says human-in-the-loop feedback produces chatty systems that need babysitting forever.
           In the enterprise, that critique misses the asset.
         </p>
         <blockquote class="pull">
@@ -200,8 +198,7 @@
         </blockquote>
         <p>
           When a knowledge worker thumbs down a SharePoint agent’s draft, corrects a classification,
-          or escalates a borderline approval, they are not babysitting a failed AGI.
-          They are labelling the only dataset that matters:
+          or escalates a borderline approval, they are labelling the only dataset that matters:
           <em>what good looks like here</em>, under <em>these</em> policies, in <em>this</em> tenant.
         </p>
         <p>
@@ -215,8 +212,8 @@
 
     <section class="block" id="governance">
       <div class="col ruled">
-        <p class="label">05 — Safe emergence</p>
-        <h2>Governed enough to bury five layers deep.</h2>
+        <p class="label">05 — Governed enough to scale</p>
+        <h2>Rails strong enough to fund the next layer.</h2>
         <p>
           You let a component run unattended if it is reliable.
           You only build on top of it if it is trustworthy.
@@ -235,7 +232,7 @@
 
     <section class="block" id="steps">
       <div class="col ruled">
-        <p class="label">06 — Three steps</p>
+        <p class="label">06 — Three moves</p>
         <h2>Compose. Instrument. Measure.</h2>
         <ol class="steps">
           <li>
@@ -259,26 +256,25 @@
             <p>
               Report task completion, time-to-outcome, escalation rate, and confidence calibration.
               If the metric board only shows message counts, you are funding chat theatre.
+              See <a href="./insights/">Insights</a>, <a href="./choice/">Choice</a>, and <a href="./measurements/">Measurements</a>.
             </p>
           </li>
         </ol>
       </div>
     </section>
 
-    <section class="last-words" id="last">
+    <section class="block" id="close">
       <div class="col framed">
         <span class="crop-bl" aria-hidden="true"></span>
         <span class="crop-br" aria-hidden="true"></span>
-        <p class="label">Last words</p>
-        <hr class="rule" />
-        <h1>The age of decorative copilots is ending.</h1>
+        <p class="label">Closing</p>
+        <h2>The age of decorative copilots is ending.</h2>
         <p>
           The organisations that win will not be those with the wittiest system prompt.
           They will be those whose agents ship work, under governance,
           improved by the people who know the work.
         </p>
-        <p>We are not building God.</p>
-        <p>We are building <strong>effective agents</strong>.</p>
+        <p>That is our goal: <strong>effective agents</strong>.</p>
         <p class="closing">Ship Outcomes, Not Chat.</p>
         <p style="margin-top:1.5rem"><a class="chip chip--ghost" data-tip-cta href="./legal/#tip">Optional tip</a></p>
       </div>
@@ -293,7 +289,7 @@
             Not affiliated with Microsoft Corporation or TypeSafe AI.
           </li>
           <li id="fn2">
-            “RLHF” here means enterprise preference loops — ratings, corrections, escalations,
+            Preference loops here mean enterprise ratings, corrections, escalations,
             and eval-driven updates applied to agents on the Microsoft stack —
             not a claim about training foundation models from scratch.
           </li>
@@ -313,18 +309,19 @@
         <span>EA</span>
       </div>
       <div class="foot-chips">
-        <a class="foot-chip" href="./">Manifesto</a>
+        <a class="foot-chip" href="./">Our Goal</a>
+        <a class="foot-chip" href="./insights/">Insights</a>
+        <a class="foot-chip" href="./choice/">Choice</a>
+        <a class="foot-chip" href="./measurements/">Measurements</a>
         <a class="foot-chip" href="./blog/">Blog</a>
         <a class="foot-chip" href="./explore/">Explore</a>
         <a class="foot-chip" href="./game/">Game</a>
-        <a class="foot-chip" href="./game/v2/">Game V2</a>
         <a class="foot-chip" href="./legal/">Legal</a>
+        <a class="foot-chip" href="./game/v2/">Game V2</a>
         <a class="foot-chip" href="./legal/#cookies">Cookies</a>
         <a class="foot-chip" href="./legal/#tip">Tip</a>
         <a class="foot-chip" href="./llms.txt">llms.txt</a>
-        <a class="foot-chip" href="./manifesto.md">manifesto.md</a>
-        <span class="foot-chip">Ship Outcomes, Not Chat</span>
-        <span class="foot-chip">en-GB</span>
+        <a class="foot-chip" href="./our-goal.md">our-goal.md</a>
       </div>
       <div class="foot-meta">
         Built on Microsoft technologies. Not affiliated with Microsoft or TypeSafe AI.<br />
