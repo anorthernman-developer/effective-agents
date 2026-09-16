@@ -4,7 +4,7 @@
 
 Turn Copilot and agent telemetry into a **defensible ROI narrative** — hours saved, assisted value, adoption and readiness, activation versus licensed seats, agent health, and consumption — without mistaking message volume for effectiveness.
 
-![Telemetry converging through a value lens into dashboard form](../assets/img/insights-hero.png)
+![Abstract telemetry and ROI signals as data forms](../assets/img/sections/insights-hero.png)
 
 Effective Agents does not ship Microsoft’s dashboards. We use the same *dashboard thinking* visible in community and Microsoft research patterns (for example ValueLens for Microsoft Copilot and AI-in-One style exports) to decide what boards should see, what operators should act on, and what to ignore.
 
@@ -25,7 +25,7 @@ If a slide cannot support a decision (expand, remediate, pause funding), it is d
 
 ## The value chain we recommend
 
-![Telemetry transforming into rising assisted-value geometry](../assets/img/insights-section.png)
+![Hours saved becoming assisted value](../assets/img/sections/insights-value.png)
 
 A practical chain used across mature Copilot programmes:
 
