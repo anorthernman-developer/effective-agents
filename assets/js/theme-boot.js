@@ -1,0 +1,1 @@
+(function(){try{var t=localStorage.getItem('ea-theme')||'dark';document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('ea-plain')==='1')document.documentElement.classList.add('plain-text');}catch(e){}})();

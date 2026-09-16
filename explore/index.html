@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Explore — Effective Agents</title>
+  <meta name="description" content="Interactive installation of the filtered Microsoft 365 AI and agent roadmap. Pin and personalise locally." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/site.css" />
+  <script src="../assets/js/theme-boot.js"></script>
+  <style>
+    .install {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .install { grid-template-columns: 220px 1fr; }
+    }
+    .rail {
+      border: 1px solid var(--border);
+      padding: 1rem;
+      height: fit-content;
+      position: sticky;
+      top: 1rem;
+    }
+    .rail h3 { margin-top: 0; font-size: 0.85rem; }
+    .rail label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin: 0.35rem 0;
+      cursor: pointer;
+    }
+    .rail input { accent-color: var(--red); }
+    .wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.85rem;
+    }
+    .tile {
+      border: 1px solid var(--border);
+      padding: 1rem 1rem 1.1rem;
+      min-height: 150px;
+      position: relative;
+      background: transparent;
+      transition: border-color 0.2s, transform 0.3s ease, opacity 0.3s;
+      animation: tile-in 0.5s ease both;
+    }
+    .tile:nth-child(odd) { animation-delay: 0.05s; }
+    .tile:nth-child(3n) { animation-delay: 0.1s; }
+    @keyframes tile-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+    .tile:hover { border-color: var(--red); }
+    .tile.pinned { border-color: var(--red); box-shadow: inset 0 0 0 1px var(--red); }
+    .tile .t-meta {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      padding-right: 2.5rem;
+    }
+    .tile h3 {
+      margin: 0 0 0.5rem;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+    .tile p {
+      margin: 0;
+      font-size: 0.82em;
+      color: var(--muted);
+    }
+    .tile a.title-link { color: inherit; border: none; }
+    .tile a.title-link:hover { color: var(--red); border: none; }
+    .empty {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .count-line {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a class="chip chip--brand" href="../">Effective <span>Agents</span></a>
+      <div class="nav-cluster nav-cluster--links">
+        <a class="chip" href="../">Manifesto</a>
+        <a class="chip" href="../blog/">Blog</a>
+        <a class="chip chip--active" href="./">Explore</a>
+        <a class="chip" href="../game/">Game</a>
+      </div>
+      <div class="nav-cluster">
+        <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero page">
+    <div class="col framed">
+      <span class="crop-bl" aria-hidden="true"></span>
+      <span class="crop-br" aria-hidden="true"></span>
+      <p class="label">Explore</p>
+      <h1>Installation of the <em>filtered</em> roadmap.</h1>
+      <p class="tagline">Ship Outcomes, Not Chat</p>
+      <p class="lede">Pin what matters. Hide the noise. Personalisation stays in your browser (localStorage) — no account, no telemetry.</p>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="col install">
+      <aside class="rail" aria-label="Filters">
+        <h3>Personalise</h3>
+        <label><input type="checkbox" id="pinsOnly" /> Pins only</label>
+        <label><input type="checkbox" id="hidePinned" /> Hide pinned</label>
+        <hr style="border:none;border-top:1px solid var(--border);margin:0.85rem 0;" />
+        <h3>Tags</h3>
+        <div id="tagFilters"></div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:0.85rem 0;" />
+        <button type="button" class="chip chip--ghost" id="clearPins" style="width:100%;text-align:center;">Clear pins</button>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <input class="input-search" type="search" id="q" placeholder="Search title or description…" aria-label="Search" />
+        </div>
+        <p class="count-line" id="countLine">Loading…</p>
+        <div class="wall" id="wall"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="inner">
+      <div class="foot-marks"><span class="mark-l">EA</span><span>EA</span></div>
+      <div class="foot-chips">
+        <a class="foot-chip" href="../">Manifesto</a>
+        <a class="foot-chip" href="../blog/">Blog</a>
+        <a class="foot-chip" href="./">Explore</a>
+        <a class="foot-chip" href="../game/">Game</a>
+        <a class="foot-chip" href="../llms.txt">llms.txt</a>
+        <a class="foot-chip" href="../manifesto.md">manifesto.md</a>
+      </div>
+      <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.<br />Roadmap data © Microsoft — filtered for AI / agent relevance.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/ambient.js"></script>
+  <script>
+(function () {
+  const PIN_KEY = 'ea-explore-pins';
+  const TAG_KEY = 'ea-explore-tags';
+  const TAG_DEFS = ['Copilot', 'Copilot Studio', 'Agent', 'Cowork', 'Foundry', 'SharePoint', 'Purview', 'Teams', 'AI'];
+
+  function loadPins() {
+    try { return new Set(JSON.parse(localStorage.getItem(PIN_KEY) || '[]')); }
+    catch { return new Set(); }
+  }
+  function savePins(set) {
+    localStorage.setItem(PIN_KEY, JSON.stringify([...set]));
+  }
+  function loadActiveTags() {
+    try {
+      const t = JSON.parse(localStorage.getItem(TAG_KEY) || 'null');
+      return t ? new Set(t) : new Set(TAG_DEFS);
+    } catch { return new Set(TAG_DEFS); }
+  }
+  function saveActiveTags(set) {
+    localStorage.setItem(TAG_KEY, JSON.stringify([...set]));
+  }
+
+  function inferTags(item) {
+    const hay = `${item.title} ${item.description} ${(item.categories || []).join(' ')}`.toLowerCase();
+    const tags = [];
+    if (/copilot\s*studio/.test(hay)) tags.push('Copilot Studio');
+    if (/\bcopilot\b/.test(hay)) tags.push('Copilot');
+    if (/\bcowork\b/.test(hay)) tags.push('Cowork');
+    if (/\bfoundry\b/.test(hay)) tags.push('Foundry');
+    if (/sharepoint/.test(hay)) tags.push('SharePoint');
+    if (/purview/.test(hay)) tags.push('Purview');
+    if (/teams/.test(hay)) tags.push('Teams');
+    if (/\bagents?\b/.test(hay)) tags.push('Agent');
+    if (/\bai\b/.test(hay)) tags.push('AI');
+    return tags.length ? tags : ['AI'];
+  }
+
+  let items = [];
+  let pins = loadPins();
+  let activeTags = loadActiveTags();
+
+  const wall = document.getElementById('wall');
+  const countLine = document.getElementById('countLine');
+  const q = document.getElementById('q');
+  const pinsOnly = document.getElementById('pinsOnly');
+  const hidePinned = document.getElementById('hidePinned');
+  const tagFilters = document.getElementById('tagFilters');
+
+  TAG_DEFS.forEach((tag) => {
+    const lab = document.createElement('label');
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = activeTags.has(tag);
+    cb.addEventListener('change', () => {
+      if (cb.checked) activeTags.add(tag); else activeTags.delete(tag);
+      saveActiveTags(activeTags);
+      render();
+    });
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode(' ' + tag));
+    tagFilters.appendChild(lab);
+  });
+
+  function render() {
+    const query = (q.value || '').trim().toLowerCase();
+    let list = items.map((it) => ({ ...it, tags: inferTags(it) }));
+
+    list = list.filter((it) => it.tags.some((t) => activeTags.has(t)));
+    if (query) {
+      list = list.filter((it) =>
+        `${it.title} ${it.description}`.toLowerCase().includes(query)
+      );
+    }
+    if (pinsOnly.checked) list = list.filter((it) => pins.has(it.id));
+    if (hidePinned.checked) list = list.filter((it) => !pins.has(it.id));
+
+    // Pins first
+    list.sort((a, b) => {
+      const pa = pins.has(a.id) ? 0 : 1;
+      const pb = pins.has(b.id) ? 0 : 1;
+      if (pa !== pb) return pa - pb;
+      return new Date(b.pubDate) - new Date(a.pubDate);
+    });
+
+    countLine.textContent = `${list.length} of ${items.length} items · ${pins.size} pinned`;
+    wall.innerHTML = '';
+    if (!list.length) {
+      wall.innerHTML = '<p class="empty">Nothing matches. Loosen filters or clear search.</p>';
+      return;
+    }
+    list.forEach((it, i) => {
+      const tile = document.createElement('article');
+      tile.className = 'tile' + (pins.has(it.id) ? ' pinned' : '');
+      tile.style.animationDelay = (i % 8) * 0.04 + 's';
+      const date = (it.pubDate || '').slice(5, 16);
+      tile.innerHTML = `
+        <button type="button" class="pin-btn${pins.has(it.id) ? ' pinned' : ''}" data-id="${it.id}" aria-label="Pin">${pins.has(it.id) ? 'Pinned' : 'Pin'}</button>
+        <p class="t-meta">${date} · ${it.tags.slice(0, 2).join(' · ')}</p>
+        <h3><a class="title-link" href="${it.link}" rel="noopener" target="_blank">${it.title.replace(/</g, '&lt;')}</a></h3>
+        <p>${(it.description || '').slice(0, 160).replace(/</g, '&lt;')}${(it.description || '').length > 160 ? '…' : ''}</p>
+      `;
+      wall.appendChild(tile);
+    });
+
+    wall.querySelectorAll('.pin-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        if (pins.has(id)) pins.delete(id); else pins.add(id);
+        savePins(pins);
+        render();
+      });
+    });
+  }
+
+  q.addEventListener('input', render);
+  pinsOnly.addEventListener('change', render);
+  hidePinned.addEventListener('change', render);
+  document.getElementById('clearPins').addEventListener('click', () => {
+    pins = new Set();
+    savePins(pins);
+    render();
+  });
+
+  fetch('../data/roadmap-ai.json')
+    .then((r) => r.json())
+    .then((data) => {
+      items = data.items || [];
+      render();
+    })
+    .catch(() => {
+      countLine.textContent = 'Could not load data/roadmap-ai.json';
+      wall.innerHTML = '<p class="empty">Offline cache missing. Run node scripts/roadmap-blog.mjs</p>';
+    });
+})();
+  </script>
+</body>
+</html>

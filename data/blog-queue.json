@@ -1,0 +1,101 @@
+{
+  "pending": [
+    {
+      "id": "571157",
+      "title": "Microsoft Purview: DSPM-Copilot Readiness and Data Explorer",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570438",
+      "title": "PowerPoint: Async Notifications for PowerPoint Agent (Web)",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570437",
+      "title": "PowerPoint: Async Notifications for PowerPoint Agent (Windows Desktop)",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570277",
+      "title": "Word: Copilot edit mode is available to users in Office 365 GCC",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570469",
+      "title": "Microsoft Copilot (Microsoft M365): Copilot Chat can now better match search results from text that appears inside images embedded in Word, Excel, and PowerPoint file",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570647",
+      "title": "SharePoint: Changes to the FAQ web part authoring experience",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570440",
+      "title": "Outlook: Inline chat for email drafting",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570427",
+      "title": "Microsoft Teams: Meeting Shared Files",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570847",
+      "title": "Microsoft Viva: Copilot Analytics - Agent value insights in Agent 365 Dashboard",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570845",
+      "title": "Microsoft Purview: Data Loss Prevention for Microsoft Cowork",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570433",
+      "title": "Microsoft Copilot Studio: Deliver rich interactive app experiences in Copilot Studio agents",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "569474",
+      "title": "Microsoft Copilot Studio: Introducing an App- and Intent-First Agent Creation Experience",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "569214",
+      "title": "Microsoft Teams: Copilot Chat for chats, channels, calls, and meetings in GCC, GCC High, and DoD",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570435",
+      "title": "Microsoft Copilot Studio: Streamlining experiences from Copilot Studio Agents in Microsoft 365 Copilot",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570434",
+      "title": "Microsoft Copilot Studio: Enabling makers to require human approval for tool calls",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570431",
+      "title": "Microsoft 365: Organizational Data Service is now available in GCC-High",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "570428",
+      "title": "Microsoft Viva: Viva Insights and Copilot Analytics in GCC-High",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    },
+    {
+      "id": "569424",
+      "title": "Excel: Excel canvas",
+      "enqueuedAt": "2026-09-16T14:35:17.085Z"
+    }
+  ],
+  "emitted": [
+    "571396",
+    "571299",
+    "571196",
+    "571195",
+    "571194"
+  ]
+}

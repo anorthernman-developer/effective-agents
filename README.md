@@ -1,65 +1,77 @@
-# Effective Agents — Brand Kit
+# Effective Agents
 
 **Ship Outcomes, Not Chat**
 
-Brand and manifesto package for **Effective Agents**: outcome-shipping agents on Microsoft’s stack (SharePoint agents, Copilot, Copilot Studio, Agent Builder, Microsoft Foundry, Purview, Scout). Independent brand — built on Microsoft technologies; not affiliated with Microsoft or TypeSafe AI.
+Outcome-shipping agents on Microsoft’s stack (SharePoint agents, Copilot, Copilot Studio, Agent Builder, Microsoft Foundry, Purview, Scout). Independent brand — built on Microsoft technologies; not affiliated with Microsoft or TypeSafe AI.
 
 Spelling: **en-GB**.
 
 ---
 
-## Contents
+## Site (static / Netlify)
 
-| File | Purpose |
+| Path | Purpose |
 |------|---------|
-| [BRAND.md](./BRAND.md) | Name, positioning, voice, audience, pillars |
-| [MANIFESTO.md](./MANIFESTO.md) | Full manifesto + tagline candidates |
-| [FRAMEWORK.md](./FRAMEWORK.md) | Six-layer framework, product map, metrics, Mermaid |
-| [BUSINESS.md](./BUSINESS.md) | Who buys, offers, GTM sketch |
-| [VISUAL.md](./VISUAL.md) | Palette, type, logo concepts, UI chrome |
-| [TAGLINES.md](./TAGLINES.md) | 12 ranked taglines |
-| [index.html](./index.html) | Self-contained manifesto landing page |
-| [README.md](./README.md) | This file |
+| [`/`](./index.html) | Manifesto home |
+| [`/blog/`](./blog/) | Short roadmap articles (what / does / worry / means for users) |
+| [`/explore/`](./explore/) | Interactive filtered roadmap — pin & personalise (`localStorage`) |
+| [`/game/`](./game/) | Vintage retro turn-by-turn humorous game on the same dataset |
+| [`/manifesto.md`](./manifesto.md) | Markdown manifesto mirror |
+| [`/llms.txt`](./llms.txt) | Machine-readable site map |
+| [`/data/roadmap-ai.json`](./data/roadmap-ai.json) | Cached filtered M365 AI/agent roadmap (offline-friendly) |
+| [`sitemap.xml`](./sitemap.xml) / [`robots.txt`](./robots.txt) | Crawlers |
+
+**Modes:** light/dark (persisted), plain-text mode, quiet Web Audio ambient (user-start + mute).
+
+**Brand kit (docs):** [BRAND.md](./BRAND.md) · [MANIFESTO.md](./MANIFESTO.md) · [FRAMEWORK.md](./FRAMEWORK.md) · [BUSINESS.md](./BUSINESS.md) · [VISUAL.md](./VISUAL.md) · [TAGLINES.md](./TAGLINES.md)
 
 ---
 
-## Open the manifesto preview
-
-From this folder:
+## Local preview
 
 ```bash
-# Option A — open in default browser (macOS)
-open index.html
-
-# Option B — Linux
-xdg-open index.html
-
-# Option C — local server (cleanest for fonts/CSS)
 python3 -m http.server 8765 --bind 127.0.0.1
-# then visit http://127.0.0.1:8765/
+# http://127.0.0.1:8765/
 ```
 
-Or simply open `index.html` via file:// in any modern browser. Google Fonts CDN is used; offline, the page falls back to system fonts.
+Or open `index.html` via `file://` (fetch of `/data/roadmap-ai.json` needs a local server for Explore/Game).
 
 ---
 
-## Mermaid diagrams
+## Roadmap → blog pipeline
 
-`FRAMEWORK.md` includes Mermaid. Preview on GitHub, in VS Code (Markdown Preview Mermaid), or paste into [mermaid.live](https://mermaid.live).
+```bash
+node scripts/roadmap-blog.mjs
+# optional:
+node scripts/roadmap-blog.mjs --force --limit 3
+```
+
+1. Fetches [Microsoft 365 Roadmap RSS](https://www.microsoft.com/releasecommunications/api/v2/m365/rss)
+2. Filters AI / Agent / Copilot / Cowork / Copilot Studio / Foundry / SharePoint agent / Agent Builder (from **1 Sept 2026**)
+3. Queues items (`data/blog-queue.json`) and emits up to **3 posts per day cycle**
+4. Writes `content/blog/*.md`, `blog/<slug>/index.html` + `.md` mirrors, refreshes `blog/index.html`, updates `data/roadmap-ai.json`
+
+### `GEMINI_API_KEY` (optional)
+
+| Feature | With key | Without key |
+|---------|----------|-------------|
+| Blog hero images | Gemini image generation | Brand SVG under `assets/img/blog/` |
+| Short audio (~5s) | Gemini TTS → `assets/audio/blog/` | Omitted |
+
+**Never commit secrets.** Use Netlify env vars or a local `.env` (gitignored).
 
 ---
 
-## How to use the kit
+## Deploy
 
-1. Read **BRAND.md** + **MANIFESTO.md** for voice and thesis.  
-2. Use **FRAMEWORK.md** in proposals and CoE workshops.  
-3. Align decks and sites to **VISUAL.md** (red / black / off-white).  
-4. Lead with tagline **#1** from **TAGLINES.md**.  
-5. Publish or demo **index.html** as top-of-funnel.  
-6. Shape commercials from **BUSINESS.md** (indicative only).
+Static site — Netlify publish directory is repo root (`netlify.toml`). Push to `main` to deploy when the site is linked.
+
+```bash
+git push origin main
+```
 
 ---
 
 ## Disclaimer
 
-Effective Agents is not affiliated with, endorsed by, or sponsored by Microsoft Corporation or TypeSafe AI. Product names are used to describe interoperability with Microsoft technologies.
+Effective Agents is not affiliated with, endorsed by, or sponsored by Microsoft Corporation or TypeSafe AI. Product names describe interoperability. Roadmap titles and descriptions © Microsoft.

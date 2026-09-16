@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-09-16T14:35:17.092Z",
+  "posts": [
+    {
+      "slug": "microsoft-teams-ask-copilot-from-search-on-mobile-571299",
+      "title": "Microsoft Teams: Ask Copilot from Search on Mobile",
+      "date": "2026-09-15",
+      "tags": [
+        "Copilot",
+        "Teams"
+      ],
+      "summary": "\n\n<p>Get answers without leaving search. As you type in the Teams search bar, you'll see an option to ask Copilot alongside search results. You can also select Ask Copilot from the search results page to turn your query into a Copilot conversation, helping you quickly find…\n\n",
+      "id": "571299",
+      "image": "/assets/img/blog/microsoft-teams-ask-copilot-from-search-on-mobile-571299.svg"
+    },
+    {
+      "slug": "microsoft-purview-data-loss-prevention-expanded-inline-prote-571396",
+      "title": "Microsoft Purview: Data Loss Prevention-Expanded inline protection for unmanaged apps in Edge for Business",
+      "date": "2026-09-15",
+      "tags": [
+        "AI",
+        "Purview"
+      ],
+      "summary": "\n\n<p>Microsoft Purview collection and data loss prevention (DLP) policies will support browser inline protection for a significantly broader set of unmanaged generative AI apps in Edge for Business. Admins can use existing Purview policy experiences to detect and protect…\n\n",
+      "id": "571396",
+      "image": "/assets/img/blog/microsoft-purview-data-loss-prevention-expanded-inline-prote-571396.svg"
+    },
+    {
+      "slug": "microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194",
+      "title": "Microsoft Copilot Studio: Cost visibility in Preview Chat and History",
+      "date": "2026-09-15",
+      "tags": [
+        "Copilot Studio",
+        "Copilot",
+        "Agent"
+      ],
+      "summary": "\n\n<p>Now makers will have clear visibility into their consumption costs directly within preview tab and agent history for their preview/testing usage as well as all every historical run. Makers can see the costs as they test, iterate, and review conversations, making usage…\n\n",
+      "id": "571194",
+      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-preview-chat-and-571194.svg"
+    },
+    {
+      "slug": "microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196",
+      "title": "Microsoft Copilot Studio: Cost visibility in Monitor tab",
+      "date": "2026-09-15",
+      "tags": [
+        "Copilot Studio",
+        "Copilot",
+        "Agent"
+      ],
+      "summary": "\n\n<p>Now makers will have clear visibility into their consumption costs directly within Monitor tab at both a per-agent level and an estimated breakdown of those costs across the agents lifecylce. This will allow makers to see costs distributed across activities such as…\n\n",
+      "id": "571196",
+      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-monitor-tab-571196.svg"
+    },
+    {
+      "slug": "microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195",
+      "title": "Microsoft Copilot Studio: Cost visibility in Agent Evaluations",
+      "date": "2026-09-15",
+      "tags": [
+        "Copilot Studio",
+        "Copilot",
+        "Agent"
+      ],
+      "summary": "\n\n<p>Now makers will have clear visibility into their consumption costs directly associated with their evaluations, including a breakdown of usage for eval generation, test runs and model grading/judgement. Makers can see the costs as they test, iterate, and review…\n\n",
+      "id": "571195",
+      "image": "/assets/img/blog/microsoft-copilot-studio-cost-visibility-in-agent-evaluation-571195.svg"
+    }
+  ]
+}

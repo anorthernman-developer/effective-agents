@@ -1,0 +1,15 @@
+{
+  "name": "effective-agents",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Effective Agents — Ship Outcomes, Not Chat",
+  "type": "module",
+  "scripts": {
+    "blog": "node scripts/roadmap-blog.mjs",
+    "blog:force": "node scripts/roadmap-blog.mjs --force --limit 3",
+    "serve": "python3 -m http.server 8765 --bind 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

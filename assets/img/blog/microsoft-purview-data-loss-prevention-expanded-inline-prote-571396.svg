@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Microsoft Purview: Data Loss Prevention-Expanded inline protection for unmanaged apps in Edge for Business">
+  <rect width="1200" height="630" fill="#0A0A0A"/>
+  <rect x="0" y="0" width="8" height="630" fill="#E10600"/>
+  <!-- crop marks -->
+  <path d="M40 40 H60 M40 40 V60" stroke="#6B6560" stroke-width="1" fill="none"/>
+  <path d="M1140 40 H1160 M1160 40 V60" stroke="#6B6560" stroke-width="1" fill="none"/>
+  <path d="M40 590 H60 M40 590 V570" stroke="#6B6560" stroke-width="1" fill="none"/>
+  <path d="M1140 590 H1160 M1160 590 V570" stroke="#6B6560" stroke-width="1" fill="none"/>
+  <text x="48" y="120" fill="#A8A29A" font-family="JetBrains Mono, monospace" font-size="14" letter-spacing="4">ROADMAP · 571396</text>
+  <text x="48" y="168" fill="#E10600" font-family="Inter, sans-serif" font-size="18" font-weight="700" letter-spacing="3">SHIP OUTCOMES, NOT CHAT</text>
+  <text x="48" y="210" fill="#F5F2EB" font-family="IBM Plex Sans, Inter, sans-serif" font-size="28" font-weight="600">Microsoft Purview: Data Loss</text>
+  <text x="48" y="246" fill="#F5F2EB" font-family="IBM Plex Sans, Inter, sans-serif" font-size="28" font-weight="600">Prevention-Expan…</text>
+  <text x="48" y="580" fill="#6B6560" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2">EFFECTIVE AGENTS</text>
+</svg>

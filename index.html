@@ -9,484 +9,81 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/site.css" />
+  <script src="./assets/js/theme-boot.js"></script>
   <style>
-    :root {
-      --black: #0A0A0A;
-      --ink: #000000;
-      --white: #F5F2EB;
-      --white-pure: #FFFFFF;
-      --red: #E10600;
-      --red-deep: #B00000;
-      --steel: #A8A29A;
-      --steel-dim: #6B6560;
-      --gutter: 30px;
-      --col: 800px;
-      --para: 1.25rem;   /* ~20px */
-      --sect: 3.125rem;  /* ~50px */
-      --font-display: "Inter", "IBM Plex Sans", system-ui, sans-serif;
-      --font-sans: "IBM Plex Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-      --font-mono: "JetBrains Mono", "IBM Plex Mono", "SF Mono", Consolas, monospace;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      margin: 0;
-      background: var(--black);
-      color: var(--white);
-      font-family: var(--font-sans);
-      font-size: clamp(1.0625rem, 0.98rem + 0.35vw, 1.1875rem);
-      line-height: 1.6;
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Industrial grit — faint scan / grain */
-    body::before {
-      content: "";
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      opacity: 0.035;
-      background-image:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(245, 242, 235, 0.035) 2px,
-          rgba(245, 242, 235, 0.035) 3px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 3px,
-          rgba(0, 0, 0, 0.12) 3px,
-          rgba(0, 0, 0, 0.12) 4px
-        );
-    }
-
-    ::selection {
-      background: var(--red);
-      color: var(--white);
-    }
-
-    a {
-      color: var(--red);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.15s ease, color 0.15s ease;
-    }
-    a:hover { border-bottom-color: var(--red); }
-    a:focus-visible {
-      outline: 2px solid var(--red);
-      outline-offset: 3px;
-    }
-
-    /* Outer frame: ~30px gutters, ~800px reading column */
-    .page {
-      width: min(100%, calc(var(--col) + 2 * var(--gutter)));
-      margin: 0 auto;
-      padding: 0 var(--gutter);
-    }
-
-    .col {
-      max-width: var(--col);
-      margin: 0 auto;
-    }
-
-    .col-narrow {
-      max-width: 36rem;
-      margin: 0 auto 0 0;
-    }
-
-    /* —— Nav chips (invert TypeSafe: white pills on black) —— */
-    .site-nav {
-      position: relative;
-      z-index: 50;
-      padding: 1.25rem var(--gutter) 0.75rem;
-    }
-    .site-nav .inner {
-      max-width: calc(var(--col) + 2 * var(--gutter));
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem 0.65rem;
-    }
-    .nav-cluster {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-    .chip {
-      display: inline-block;
-      font-family: var(--font-sans);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      color: var(--ink);
-      background: var(--white);
-      border: 1px solid var(--white);
-      padding: 0.4rem 0.75rem;
-      border-radius: 0;
-      border-bottom: none;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-    .chip:hover {
-      background: var(--white-pure);
-      color: var(--ink);
-      border-bottom: none;
-    }
-    .chip--brand span { color: var(--red); }
-    .chip--ghost {
-      background: transparent;
-      color: var(--steel);
-      border-color: rgba(168, 162, 154, 0.35);
-    }
-    .chip--ghost:hover {
-      color: var(--white);
-      border-color: var(--steel);
-      background: transparent;
-    }
-
-    /* —— Crop marks —— */
-    .framed {
-      position: relative;
-      margin: 0.75rem 0 var(--sect);
-      padding: 1.75rem 1.25rem 2rem;
-    }
-    .framed::before,
-    .framed::after,
-    .crop-bl,
-    .crop-br {
-      content: "";
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      pointer-events: none;
-    }
-    .framed::before {
-      top: 0; left: 0;
-      border-top: 1px solid var(--steel-dim);
-      border-left: 1px solid var(--steel-dim);
-    }
-    .framed::after {
-      top: 0; right: 0;
-      border-top: 1px solid var(--steel-dim);
-      border-right: 1px solid var(--steel-dim);
-    }
-    .framed .crop-bl {
-      bottom: 0; left: 0;
-      border-bottom: 1px solid var(--steel-dim);
-      border-left: 1px solid var(--steel-dim);
-    }
-    .framed .crop-br {
-      bottom: 0; right: 0;
-      border-bottom: 1px solid var(--steel-dim);
-      border-right: 1px solid var(--steel-dim);
-    }
-
-    /* —— Labels (mono) —— */
-    .label {
-      font-family: var(--font-mono);
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--steel);
-      margin: 0 0 0.85rem;
-    }
-    .label::before {
-      content: "";
-      display: inline-block;
-      width: 0.45rem;
-      height: 0.45rem;
-      background: var(--red);
-      margin-right: 0.55rem;
-      vertical-align: middle;
-      transform: translateY(-1px);
-    }
-
-    /* —— Oversized grotesk H1 —— */
-    h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.75rem, 1.4rem + 5.5vw, 5.25rem);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      margin: 0 0 1.5rem;
-      color: var(--white-pure);
-    }
-    h1 em {
-      font-style: normal;
-      color: var(--red);
-      font-weight: 700;
-    }
-
-    .tagline {
-      font-family: var(--font-mono);
-      font-size: clamp(0.8rem, 0.72rem + 0.35vw, 0.95rem);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--steel);
-      margin: 0 0 2rem;
-    }
-
-    .lede {
-      font-size: 1.08em;
-      color: var(--white);
-      max-width: 38rem;
-      margin: 0;
-    }
-
-    /* —— Sections with thin vertical rule —— */
-    section.block {
-      padding: 0 0 var(--sect);
-      margin: 0;
-      border: none;
-    }
-
-    .ruled {
-      position: relative;
-      padding-left: 1.15rem;
-      border-left: 1px solid rgba(168, 162, 154, 0.28);
-    }
-
-    h2 {
-      font-family: var(--font-display);
-      font-size: clamp(1.55rem, 1.15rem + 1.6vw, 2.15rem);
-      font-weight: 600;
-      line-height: 1.2;
-      letter-spacing: -0.025em;
-      margin: 0 0 1.15rem;
-      color: var(--white-pure);
-    }
-
-    h3 {
-      font-family: var(--font-sans);
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin: 1.75rem 0 0.65rem;
-      color: var(--white-pure);
-    }
-
-    p {
-      margin: 0 0 var(--para);
-    }
-    p:last-child { margin-bottom: 0; }
-
-    strong { font-weight: 600; color: var(--white-pure); }
-
-    /* Steps */
+    /* Manifesto page extras */
     .steps {
-      list-style: none;
-      padding: 0;
-      margin: 1.75rem 0 0;
-      counter-reset: step;
+      list-style: none; padding: 0; margin: 1.75rem 0 0; counter-reset: step;
     }
     .steps li {
-      position: relative;
-      padding: 1.35rem 0 1.35rem 3rem;
-      border-top: 1px solid rgba(168, 162, 154, 0.18);
-      counter-increment: step;
+      position: relative; padding: 1.35rem 0 1.35rem 3rem;
+      border-top: 1px solid var(--border); counter-increment: step;
     }
-    .steps li:last-child {
-      border-bottom: 1px solid rgba(168, 162, 154, 0.18);
-    }
+    .steps li:last-child { border-bottom: 1px solid var(--border); }
     .steps li::before {
       content: counter(step, decimal-leading-zero);
-      position: absolute;
-      left: 0;
-      top: 1.4rem;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      color: var(--red);
+      position: absolute; left: 0; top: 1.4rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.08em; color: var(--red);
     }
-    .steps h3 {
-      margin: 0 0 0.45rem;
-      font-size: 1.05rem;
-    }
-    .steps p {
-      margin: 0;
-      color: var(--steel);
-      font-size: 0.95em;
-    }
-
-    /* Compare table */
+    .steps h3 { margin: 0 0 0.45rem; font-size: 1.05rem; }
+    .steps p { margin: 0; color: var(--muted); font-size: 0.95em; }
     .compare {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
-      font-size: 0.9em;
+      width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9em;
     }
-    .compare th,
-    .compare td {
-      text-align: left;
-      padding: 0.8rem 0.65rem;
-      border-bottom: 1px solid rgba(168, 162, 154, 0.22);
-      vertical-align: top;
+    .compare th, .compare td {
+      text-align: left; padding: 0.8rem 0.65rem;
+      border-bottom: 1px solid var(--border); vertical-align: top;
     }
     .compare th {
-      font-family: var(--font-mono);
-      font-size: 0.625rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--steel);
-      font-weight: 500;
+      font-family: var(--font-mono); font-size: 0.625rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); font-weight: 500;
     }
-    .compare td:first-child { color: var(--steel-dim); }
-    .compare td:last-child { color: var(--white); }
-
-    blockquote.pull {
-      margin: 1.75rem 0;
-      padding: 1.1rem 0 1.1rem 1.15rem;
-      border-left: 3px solid var(--red);
-      font-family: var(--font-display);
-      font-size: 1.28em;
-      font-weight: 500;
-      line-height: 1.35;
-      letter-spacing: -0.015em;
-      color: var(--white-pure);
-    }
-
-    /* Last words — oversized title reprise */
-    .last-words {
-      padding: clamp(2.5rem, 8vw, 4.5rem) 0 var(--sect);
-    }
+    .compare td:first-child { color: var(--muted-dim); }
+    .compare td:last-child { color: var(--fg); }
+    blockquote.pull em { font-style: italic; color: var(--muted); }
+    .last-words { padding: 0 0 var(--sect); }
+    .last-words h1 { font-size: clamp(2rem, 1.1rem + 3.5vw, 3.25rem); }
     .last-words .rule {
-      width: 2.5rem;
-      height: 3px;
-      background: var(--red);
-      margin: 0 0 1.5rem;
-      border: none;
-    }
-    .last-words h1 {
-      font-size: clamp(2.25rem, 1.2rem + 4vw, 4rem);
-      margin-bottom: 1.35rem;
+      border: none; border-top: 1px solid var(--border); margin: 0 0 1.5rem;
     }
     .closing {
-      font-family: var(--font-mono);
-      font-size: clamp(0.9rem, 0.8rem + 0.35vw, 1.05rem);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin: 2.25rem 0 0;
+      font-family: var(--font-mono); letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--red); margin-top: 1.5rem;
     }
-
-    /* Appendix / footnotes — narrower + mono */
     .appendix {
-      padding: 0 0 calc(var(--sect) + 0.5rem);
-    }
-    .appendix .ruled {
-      max-width: 34rem;
-    }
-    .appendix .label {
-      margin-bottom: 1.1rem;
-    }
-    .appendix ol {
-      margin: 0;
-      padding-left: 1.15rem;
-      color: var(--steel-dim);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      line-height: 1.55;
+      padding: 0 0 2rem; font-size: 0.72rem; line-height: 1.55; color: var(--muted);
     }
     .appendix li { margin-bottom: 0.75rem; }
-    .appendix a { color: var(--steel); }
-
+    .appendix a { color: var(--muted); }
     .sup {
-      font-family: var(--font-mono);
-      font-size: 0.65em;
-      color: var(--red);
-      vertical-align: super;
-      margin-left: 0.08em;
+      font-family: var(--font-mono); font-size: 0.65em;
+      color: var(--red); vertical-align: super; margin-left: 0.08em;
     }
-
-    /* Footer with EA marks */
-    footer.site-foot {
-      padding: 1.5rem var(--gutter) 2.75rem;
-      border-top: 1px solid rgba(168, 162, 154, 0.18);
-    }
-    footer.site-foot .inner {
-      max-width: calc(var(--col) + 2 * var(--gutter));
-      margin: 0 auto;
-    }
-    .foot-marks {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--steel-dim);
-      letter-spacing: 0.15em;
-    }
-    .foot-marks .mark-l { color: var(--red); }
-    .foot-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1.15rem;
-    }
-    .foot-chip {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.625rem;
-      letter-spacing: 0.04em;
-      color: var(--white);
-      background: var(--ink);
-      border: 1px solid rgba(168, 162, 154, 0.35);
-      padding: 0.45rem 0.7rem;
-      border-radius: 0;
-      border-bottom: none;
-    }
-    .foot-chip:hover {
-      border-color: var(--red);
-      color: var(--white);
-      border-bottom: none;
-    }
-    .foot-meta {
-      font-family: var(--font-mono);
-      font-size: 0.625rem;
-      letter-spacing: 0.05em;
-      color: var(--steel-dim);
-      line-height: 1.7;
-    }
-
-    .hero {
-      padding: clamp(2.5rem, 8vw, 5rem) 0 0.5rem;
-    }
-
+    .hero h1 { font-size: clamp(2.75rem, 1.4rem + 5.5vw, 5.25rem); }
     @media (max-width: 560px) {
-      :root { --gutter: 20px; }
-      .nav-cluster--links { display: none; }
-      .framed { padding: 1.35rem 0.65rem 1.5rem; }
       .compare { display: block; overflow-x: auto; }
-      .ruled { padding-left: 0.85rem; }
     }
   </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Primary">
     <div class="inner">
-      <a class="chip chip--brand" href="#">Effective <span>Agents</span></a>
+      <a class="chip chip--brand" href="./">Effective <span>Agents</span></a>
       <div class="nav-cluster nav-cluster--links">
-        <a class="chip" href="#mission">Mission</a>
-        <a class="chip" href="#carriage">Thesis</a>
-        <a class="chip" href="#rlhf">RLHF</a>
-        <a class="chip" href="#steps">Steps</a>
-        <a class="chip" href="#last">Last words</a>
+        <a class="chip chip--active" href="./">Manifesto</a>
+        <a class="chip" href="./blog/">Blog</a>
+        <a class="chip" href="./explore/">Explore</a>
+        <a class="chip" href="./game/">Game</a>
       </div>
-      <a class="chip chip--ghost" href="#appendix">Appendix</a>
+      <div class="nav-cluster">
+        <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
+      </div>
     </div>
   </nav>
 
@@ -709,12 +306,16 @@
   <footer class="site-foot">
     <div class="inner">
       <div class="foot-marks" aria-hidden="true">
-        <span class="mark-l">⊢ ∵</span>
-        <span>■ □</span>
-        <span>⊣</span>
+        <span class="mark-l">EA</span>
+        <span>EA</span>
       </div>
       <div class="foot-chips">
-        <span class="foot-chip">Effective Agents · <span id="y"></span></span>
+        <a class="foot-chip" href="./">Manifesto</a>
+        <a class="foot-chip" href="./blog/">Blog</a>
+        <a class="foot-chip" href="./explore/">Explore</a>
+        <a class="foot-chip" href="./game/">Game</a>
+        <a class="foot-chip" href="./llms.txt">llms.txt</a>
+        <a class="foot-chip" href="./manifesto.md">manifesto.md</a>
         <span class="foot-chip">Ship Outcomes, Not Chat</span>
         <span class="foot-chip">en-GB</span>
       </div>
@@ -725,9 +326,9 @@
     </div>
   </footer>
   <script>
-    var y = new Date().getFullYear();
-    document.getElementById("y").textContent = y;
-    document.getElementById("y2").textContent = y;
+    document.getElementById("y2").textContent = new Date().getFullYear();
   </script>
+  <script src="./assets/js/site.js"></script>
+  <script src="./assets/js/ambient.js"></script>
 </body>
 </html>

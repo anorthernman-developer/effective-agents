@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game — Effective Agents</title>
+  <meta name="description" content="Vintage retro turn-by-turn humorous game on the filtered Microsoft 365 AI and agent roadmap." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/site.css" />
+  <script src="../assets/js/theme-boot.js"></script>
+  <style>
+    .crt-flicker { animation: flicker 4s infinite; }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: 0.92; }
+      94% { opacity: 1; }
+      96% { opacity: 0.88; }
+      97% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a class="chip chip--brand" href="../">Effective <span>Agents</span></a>
+      <div class="nav-cluster nav-cluster--links">
+        <a class="chip" href="../">Manifesto</a>
+        <a class="chip" href="../blog/">Blog</a>
+        <a class="chip" href="../explore/">Explore</a>
+        <a class="chip chip--active" href="./">Game</a>
+      </div>
+      <div class="nav-cluster">
+        <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero page">
+    <div class="col framed">
+      <span class="crop-bl" aria-hidden="true"></span>
+      <span class="crop-br" aria-hidden="true"></span>
+      <p class="label">Game</p>
+      <h1>Agent Ops <em>1987</em></h1>
+      <p class="tagline">Ship Outcomes, Not Chat</p>
+      <p class="lede">A turn-by-turn text adventure for CoE leads who have seen one too many demos. Same filtered roadmap. Worse coffee. Better decisions (maybe).</p>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="col">
+      <div class="game-stats" id="stats" aria-live="polite">
+        <span>Turn <strong id="turn">0</strong></span>
+        <span>Outcomes <strong id="outcomes">0</strong></span>
+        <span>Chat debt <strong id="chat">0</strong></span>
+        <span>Governance <strong id="gov">50</strong></span>
+      </div>
+      <div class="game-stage crt-flicker" id="stage" role="log" aria-live="polite">
+        <div class="game-log" id="log">Loading roadmap ROM…</div>
+        <div class="game-choices" id="choices"></div>
+      </div>
+      <p style="margin-top:1.25rem;font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.06em;">
+        Humour only. Roadmap titles are real; dialogue is satire. Not affiliated with Microsoft.
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="inner">
+      <div class="foot-marks"><span class="mark-l">EA</span><span>EA</span></div>
+      <div class="foot-chips">
+        <a class="foot-chip" href="../">Manifesto</a>
+        <a class="foot-chip" href="../blog/">Blog</a>
+        <a class="foot-chip" href="../explore/">Explore</a>
+        <a class="foot-chip" href="./">Game</a>
+        <a class="foot-chip" href="../llms.txt">llms.txt</a>
+        <a class="foot-chip" href="../manifesto.md">manifesto.md</a>
+      </div>
+      <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/ambient.js"></script>
+  <script>
+(function () {
+  const state = {
+    turn: 0,
+    outcomes: 0,
+    chat: 0,
+    gov: 50,
+    deck: [],
+    idx: 0,
+    over: false,
+  };
+
+  const logEl = document.getElementById('log');
+  const choicesEl = document.getElementById('choices');
+
+  function syncStats() {
+    document.getElementById('turn').textContent = state.turn;
+    document.getElementById('outcomes').textContent = state.outcomes;
+    document.getElementById('chat').textContent = state.chat;
+    document.getElementById('gov').textContent = state.gov;
+  }
+
+  function typeLines(text) {
+    logEl.innerHTML = text;
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function flavour(item) {
+    const hay = `${item.title} ${item.description}`.toLowerCase();
+    if (/cost|consumption/.test(hay))
+      return 'Finance has entered the chat. Literally. They want a spreadsheet named "why_is_the_agent_hungry.xlsx".';
+    if (/approval|human/.test(hay))
+      return 'A human-in-the-loop checkbox stares at you. It knows you will leave it ticked forever.';
+    if (/dlp|purview|security/.test(hay))
+      return 'Security clears its throat. Somewhere a Scout alert practices its dramatic entrance.';
+    if (/copilot studio/.test(hay))
+      return 'A maker demo starts without asking. Someone whispers "low-code" like a summoning ritual.';
+    if (/cowork/.test(hay))
+      return 'Cowork appears. Half the room thinks it is a job title. The other half opens Purview.';
+    if (/teams|search|chat/.test(hay))
+      return 'Someone asks Copilot the same question three times. The third answer is polite. The work is still unfinished.';
+    if (/agent/.test(hay))
+      return 'An "agent" slides into the roadmap. Marketing has already booked a webinar.';
+    return 'The roadmap hums. Fluorescent lights flicker. The coffee tastes like governance.';
+  }
+
+  function endGame(reason) {
+    state.over = true;
+    const rank =
+      state.outcomes >= 6 && state.chat < 4
+        ? 'EFFECTIVE OPERATOR'
+        : state.chat > state.outcomes
+          ? 'CHAT THEATRE APPRENTICE'
+          : 'COE SURVIVOR';
+    typeLines(
+      `<span class="prompt">&gt;</span> SYSTEM HALT\n\n${reason}\n\n` +
+        `Outcomes shipped: ${state.outcomes}\nChat debt accrued: ${state.chat}\nGovernance: ${state.gov}\n\n` +
+        `Rank: ${rank}\n\nShip Outcomes, Not Chat.`
+    );
+    choicesEl.innerHTML = '';
+    const again = document.createElement('button');
+    again.className = 'game-choice';
+    again.textContent = 'A) Insert another coin (restart)';
+    again.addEventListener('click', start);
+    choicesEl.appendChild(again);
+  }
+
+  function present() {
+    if (state.over) return;
+    if (state.turn >= 8 || state.idx >= state.deck.length) {
+      endGame(
+        state.outcomes > state.chat
+          ? 'You closed loops. The intranet is slightly less decorative. HR still wants a chatbot.'
+          : 'The demos were beautiful. The tickets remain. Somewhere a bot said "Happy to help!"'
+      );
+      return;
+    }
+    if (state.gov <= 0) {
+      endGame('Governance collapsed. Purview sent flowers. Scout wrote a blog post titled "We Told You".');
+      return;
+    }
+    if (state.chat >= 12) {
+      endGame('Chat debt overflow. Tokens evaporated. A pilot was declared "successful" and then forgotten.');
+      return;
+    }
+
+    const item = state.deck[state.idx];
+    state.turn += 1;
+    syncStats();
+
+    const body =
+      `<span class="prompt">&gt;</span> TURN ${state.turn} — ROADMAP INCOMING\n\n` +
+      `TITLE: ${item.title}\n` +
+      `ID: ${item.id}\n\n` +
+      `${flavour(item)}\n\n` +
+      `Briefing: ${(item.description || '').slice(0, 220)}${(item.description || '').length > 220 ? '…' : ''}\n\n` +
+      `What do you do, operator?`;
+
+    typeLines(body);
+
+    const choices = [
+      {
+        label: 'A) Ground it in SharePoint/Graph and ship a measurable outcome',
+        apply: () => {
+          state.outcomes += 2;
+          state.gov = Math.min(100, state.gov + 5);
+          state.chat = Math.max(0, state.chat - 1);
+          return 'You wired grounding and a metric. Someone finishes a task. Applause is awkward but real.';
+        },
+      },
+      {
+        label: 'B) Add it to the "ask me anything" bot and schedule a webinar',
+        apply: () => {
+          state.chat += 3;
+          state.gov -= 5;
+          return 'The webinar has a great title. The outcome board remains empty. Marketing sends stickers.';
+        },
+      },
+      {
+        label: 'C) Require human approval + capture preference for RLHF loop',
+        apply: () => {
+          state.outcomes += 1;
+          state.gov = Math.min(100, state.gov + 8);
+          state.chat += 1;
+          return 'Escalations become training signal. Slow at first. Then less wrong. Then useful.';
+        },
+      },
+      {
+        label: 'D) Ignore it — "we will revisit after Q4"',
+        apply: () => {
+          state.chat += 1;
+          state.gov -= 3;
+          return 'Q4 arrives wearing a trench coat made of unfinished pilots. It knows your name.';
+        },
+      },
+    ];
+
+    choicesEl.innerHTML = '';
+    choices.forEach((c) => {
+      const btn = document.createElement('button');
+      btn.className = 'game-choice';
+      btn.type = 'button';
+      btn.textContent = c.label;
+      btn.addEventListener('click', () => {
+        const note = c.apply();
+        syncStats();
+        state.idx += 1;
+        typeLines(`<span class="prompt">&gt;</span> RESULT\n\n${note}\n\n(press continue)`);
+        choicesEl.innerHTML = '';
+        const next = document.createElement('button');
+        next.className = 'game-choice';
+        next.textContent = 'Continue →';
+        next.addEventListener('click', present);
+        choicesEl.appendChild(next);
+      });
+      choicesEl.appendChild(btn);
+    });
+  }
+
+  function start() {
+    state.turn = 0;
+    state.outcomes = 0;
+    state.chat = 0;
+    state.gov = 50;
+    state.idx = 0;
+    state.over = false;
+    state.deck = shuffle(state.deck.length ? state._source : []).slice(0, 10);
+    if (!state.deck.length && state._source) state.deck = shuffle(state._source).slice(0, 10);
+    syncStats();
+    typeLines(
+      `<span class="prompt">&gt;</span> AGENT OPS 1987\n\n` +
+        `Booting CoE terminal…\nLoading filtered M365 roadmap ROM…\n` +
+        `${(state._source || []).length} AI/agent items online.\n\n` +
+        `Objective: ship outcomes. Avoid chat theatre.\nGovernance starts at 50. Do not let it hit zero.\n\n` +
+        `Insert courage to begin.`
+    );
+    choicesEl.innerHTML = '';
+    const go = document.createElement('button');
+    go.className = 'game-choice';
+    go.textContent = 'A) Begin shift';
+    go.addEventListener('click', () => {
+      state.deck = shuffle(state._source).slice(0, 10);
+      present();
+    });
+    choicesEl.appendChild(go);
+  }
+
+  fetch('../data/roadmap-ai.json')
+    .then((r) => r.json())
+    .then((data) => {
+      state._source = data.items || [];
+      start();
+    })
+    .catch(() => {
+      typeLines('ERROR: roadmap ROM missing (data/roadmap-ai.json).\nRun node scripts/roadmap-blog.mjs');
+    });
+})();
+  </script>
+</body>
+</html>
