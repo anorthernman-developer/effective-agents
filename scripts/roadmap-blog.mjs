@@ -7,15 +7,14 @@
  * → write content/blog/*.md + blog HTML + data/roadmap-ai.json
  *
  * Images: Gemini 2.5/3.1 flash-image when GEMINI_API_KEY else brand SVG
- * Audio: Gemini TTS ~5s (PCM wrapped as WAV) when key else omit
+ * Audio: Gemini TTS natural pace ~10–20s (PCM→WAV, never time-squeezed) when key else omit
  *
- * Usage: node scripts/roadmap-blog.mjs [--force] [--limit N] [--slug SLUG ...] [--slugs a,b]
+ * Usage: node scripts/roadmap-blog.mjs [--force] [--audio-only] [--limit N] [--slug SLUG ...] [--slugs a,b]
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
-import { spawnSync } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -52,6 +51,8 @@ for (let i = 0; i < args.length; i++) {
     for (const s of args[++i].split(',').map((x) => x.trim()).filter(Boolean)) ONLY_SLUGS.add(s);
   }
 }
+/** Prefer regenerating TTS only (reuse existing hero images) to save Gemini image quota */
+const AUDIO_ONLY = args.includes('--audio-only');
 
 function ensureDirs() {
   for (const d of [
@@ -66,18 +67,26 @@ function ensureDirs() {
 }
 
 function stripHtml(s) {
-  return String(s || '')
+  let t = String(s || '')
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ');
+  // Strip tags first (handles raw HTML in RSS), then decode entities, then strip again
+  // in case entities reintroduced angle brackets.
+  const decode = (x) =>
+    x
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
+      .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)));
+  t = t.replace(/<[^>]+>/g, ' ');
+  t = decode(t);
+  t = t.replace(/<[^>]+>/g, ' ');
+  return t.replace(/\s+/g, ' ').trim();
 }
 
 function parseRss(xml) {
@@ -219,11 +228,14 @@ const GEMINI_TTS_MODELS = [
 
 function geminiKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
-  // Fall back to box secrets (sand-data/box-secrets.json → card.GEMINI_API_KEY)
+  // Fall back to box secrets (agent-data or sand-data box-secrets.json → card.GEMINI_API_KEY)
   try {
     const candidates = [
+      path.join('/home/box/agent-data/box-secrets.json'),
       path.join('/home/box/sand-data/box-secrets.json'),
+      path.join(ROOT, '..', 'agent-data', 'box-secrets.json'),
       path.join(ROOT, '..', 'sand-data', 'box-secrets.json'),
+      path.join(process.env.HOME || '', 'agent-data', 'box-secrets.json'),
       path.join(process.env.HOME || '', 'sand-data', 'box-secrets.json'),
     ];
     for (const cand of candidates) {
@@ -316,15 +328,22 @@ function clip(s, n) {
   return t.slice(0, n).replace(/\s+\S*$/, '');
 }
 
+function firstSentence(s, n) {
+  const t = String(s || '').replace(/\s+/g, ' ').trim();
+  const m = t.match(/^[^.!?]+[.!?]?/);
+  return clip(m ? m[0] : t, n);
+}
+
 function ttsScript(item) {
-  const what = clip(item.title.replace(/^Microsoft\s+/i, ''), 36);
-  const does = clip(whatItDoes(item), 28);
-  const worry = clip(classifyWorry(item), 28);
-  const means = clip(meansForUsers(item), 28);
-  // Ultra-short: ~5s spoken at brisk pace (~20–25 words).
+  // Full short sentences, not telegram fragments. Aim ~30–40 spoken words → ~12–20s calm pace.
+  // Prefer first complete sentence + generous clip caps so we do not chop mid-word into gibberish.
+  const what = clip(item.title.replace(/^Microsoft\s+/i, ''), 56);
+  const does = firstSentence(whatItDoes(item), 95);
+  const worry = firstSentence(classifyWorry(item), 85);
+  const means = firstSentence(meansForUsers(item), 85);
   return (
-    'In five seconds, brisk calm British voice, transcript only: ' +
-    `It is ${what}. Does: ${does}. Worry: ${worry}. Users: ${means}.`
+    'Speak slowly and clearly, calm British English, short pauses between sentences. Do not rush. ' +
+    `This item is ${what}. What it does: ${does} What to worry about: ${worry} What it means for users: ${means}`
   );
 }
 
@@ -372,36 +391,6 @@ async function maybeGeminiImage(title, slug) {
 }
 
 
-function squeezeWavTowardFiveSeconds(filePath, sampleRate = 24000, targetSec = 5.2) {
-  try {
-    const buf = fs.readFileSync(filePath);
-    const dur = Math.max(0.01, (buf.length - 44) / (sampleRate * 2));
-    if (dur <= 6) return;
-    let tempo = dur / targetSec;
-    const filters = [];
-    while (tempo > 2) {
-      filters.push('atempo=2.0');
-      tempo /= 2;
-    }
-    if (tempo > 1.02) filters.push(`atempo=${tempo.toFixed(3)}`);
-    if (!filters.length) return;
-    const tmp = `${filePath}.tmp.wav`;
-    const r = spawnSync(
-      'ffmpeg',
-      ['-y', '-i', filePath, '-filter:a', filters.join(','), '-ac', '1', '-ar', String(sampleRate), tmp],
-      { encoding: 'utf8' }
-    );
-    if (r.status === 0 && fs.existsSync(tmp) && fs.statSync(tmp).size > 44) {
-      fs.renameSync(tmp, filePath);
-      const after = (fs.statSync(filePath).size - 44) / (sampleRate * 2);
-      console.log(`TTS squeezed ${dur.toFixed(1)}s → ~${after.toFixed(1)}s`);
-    } else if (fs.existsSync(tmp)) {
-      fs.unlinkSync(tmp);
-    }
-  } catch (e) {
-    console.warn('TTS squeeze skipped:', e.message);
-  }
-}
 
 async function maybeGeminiTts(item, slug) {
   if (!geminiKey()) return null;
@@ -411,7 +400,7 @@ async function maybeGeminiTts(item, slug) {
     generationConfig: {
       responseModalities: ['AUDIO'],
       speechConfig: {
-        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } },
+        voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Kore' } }, // calm steady prebuilt
       },
     },
   };
@@ -430,7 +419,6 @@ async function maybeGeminiTts(item, slug) {
       const wav = pcmToWav(pcm, rate);
       const out = path.join(ROOT, 'assets', 'audio', 'blog', `${slug}.wav`);
       fs.writeFileSync(out, wav);
-      squeezeWavTowardFiveSeconds(out, rate);
       const finalSize = fs.statSync(out).size;
       console.log(`Gemini TTS ${model} → ${slug}.wav (${finalSize} bytes)`);
       return `/assets/audio/blog/${slug}.wav`;
@@ -526,6 +514,7 @@ function sharedNav(prefix = '../..', active = '') {
         ${a('Blog', '/blog/')}
         ${a('Explore', '/explore/')}
         ${a('Game', '/game/')}
+        ${a('Game V2', '/game/v2/')}
       </div>
       <div class="nav-cluster">
         <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
@@ -546,6 +535,10 @@ function sharedFoot(prefix = '../..') {
         <a class="foot-chip" href="${prefix}/blog/">Blog</a>
         <a class="foot-chip" href="${prefix}/explore/">Explore</a>
         <a class="foot-chip" href="${prefix}/game/">Game</a>
+        <a class="foot-chip" href="${prefix}/game/v2/">Game V2</a>
+        <a class="foot-chip" href="${prefix}/legal/">Legal</a>
+        <a class="foot-chip" href="${prefix}/legal/#cookies">Cookies</a>
+        <a class="foot-chip" href="${prefix}/legal/#tip">Tip</a>
         <a class="foot-chip" href="${prefix}/llms.txt">llms.txt</a>
         <a class="foot-chip" href="${prefix}/manifesto.md">manifesto.md</a>
       </div>
@@ -553,6 +546,7 @@ function sharedFoot(prefix = '../..') {
     </div>
   </footer>
   <div class="ambient-dock grain-hide-plain" aria-hidden="true"></div>
+  <script src="${prefix}/assets/js/site-config.js"></script>
   <script src="${prefix}/assets/js/site.js"></script>
   <script src="${prefix}/assets/js/ambient.js"></script>`;
 }
@@ -561,7 +555,7 @@ function articleHtml(item, meta, bodyMd) {
   const tags = pickTags(item);
   const date = new Date(item.pubDate).toISOString().slice(0, 10);
   const audio = meta.audio
-    ? `<div class="audio-bar">Listen (~5s)<audio controls preload="none" src="../..${meta.audio}"></audio></div>`
+    ? `<div class="audio-bar">Listen (short)<audio controls preload="none" src="../..${meta.audio}"></audio></div>`
     : '';
   const img =
     meta.image && meta.image.endsWith('.svg')
@@ -766,8 +760,25 @@ async function main() {
       continue;
     }
 
-    console.log(`Emitting: ${item.title.slice(0, 70)}`);
-    let image = await maybeGeminiImage(item.title, slug);
+    console.log(`Emitting: ${item.title.slice(0, 70)}${AUDIO_ONLY ? ' [audio-only]' : ''}`);
+    let image = null;
+    if (AUDIO_ONLY && fs.existsSync(postPath)) {
+      const prev = fs.readFileSync(postPath, 'utf8');
+      const im = prev.match(/^image:\s*"?([^"\n]+)"?/m);
+      if (im && im[1].trim()) image = im[1].trim();
+    }
+    if (!image && !AUDIO_ONLY) {
+      image = await maybeGeminiImage(item.title, slug);
+    }
+    if (!image) {
+      for (const ext of ['png', 'jpg', 'svg']) {
+        const p = path.join(ROOT, 'assets', 'img', 'blog', `${slug}.${ext}`);
+        if (fs.existsSync(p)) {
+          image = `/assets/img/blog/${slug}.${ext}`;
+          break;
+        }
+      }
+    }
     if (!image) {
       const svgPath = path.join(ROOT, 'assets', 'img', 'blog', `${slug}.svg`);
       fs.writeFileSync(svgPath, brandSvg(item.title, item.id));

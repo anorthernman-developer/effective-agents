@@ -56,7 +56,7 @@ node scripts/roadmap-blog.mjs --force --limit 3
 | Feature | With key | Without key |
 |---------|----------|-------------|
 | Blog hero images | Gemini image generation | Brand SVG under `assets/img/blog/` |
-| Short audio (~5s) | Gemini TTS → `assets/audio/blog/` | Omitted |
+| Short audio (~12–20s) | Gemini TTS → `assets/audio/blog/` | Omitted |
 
 **Never commit secrets.** Use Netlify env vars or a local `.env` (gitignored).
 
@@ -75,3 +75,13 @@ git push origin main
 ## Disclaimer
 
 Effective Agents is not affiliated with, endorsed by, or sponsored by Microsoft Corporation or TypeSafe AI. Product names describe interoperability. Roadmap titles and descriptions © Microsoft.
+
+## Config
+
+- `assets/js/site-config.js` — set `TIP_URL` to your Buy Me a Coffee / Stripe Payment Link (leave empty for `#tip` instructions only). Never commit API keys.
+- `GEMINI_API_KEY` from env or `/home/box/agent-data/box-secrets.json` card (pipeline only).
+
+## Notable paths
+
+- `/` manifesto · `/blog/` · `/explore/` · `/game/` (Agent Ops 1987) · `/game/v2/` · `/legal/`
+

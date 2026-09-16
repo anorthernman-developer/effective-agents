@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game V2 — Effective Agents</title>
+  <meta name="description" content="Three-round interactive triage of the filtered Microsoft 365 AI roadmap: invaders, magnetic poetry, animal triage, SVG export." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/site.css" />
+  <script src="../../assets/js/theme-boot.js"></script>
+  <style>
+    .hud {
+      display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3);
+      font-family: var(--font-mono); font-size: 0.7rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: var(--s3); align-items: center;
+    }
+    .hud strong { color: var(--red); font-weight: 500; }
+    .hud .spacer { flex: 1 1 auto; }
+    .round-panel { display: none; }
+    .round-panel.is-active { display: block; }
+    .splash img {
+      width: min(100%, 42rem); border: 1px solid var(--border);
+      display: block; margin: var(--s3) 0; aspect-ratio: 16/9; object-fit: cover;
+    }
+    /* Round 1 */
+    #invaders {
+      position: relative; width: 100%; height: min(62vh, 480px);
+      background: #050505; border: 2px solid var(--red); overflow: hidden;
+      touch-action: none; cursor: crosshair;
+    }
+    #invaders canvas { display: block; width: 100%; height: 100%; }
+    .r1-help {
+      font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted);
+      margin: var(--s2) 0 0; letter-spacing: 0.04em;
+    }
+    /* Round 2 */
+    .poetry {
+      display: grid; gap: var(--s3);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 800px) {
+      .poetry { grid-template-columns: 1fr 1.618fr; }
+    }
+    .pool, .cols {
+      border: 1px solid var(--border); min-height: 12rem; padding: var(--s2);
+      background: rgba(0,0,0,0.2);
+    }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+    .col-bin {
+      border: 1px dashed var(--border); min-height: 10rem; padding: var(--s2);
+      background: var(--grey-1);
+    }
+    .col-bin h4 {
+      margin: 0 0 var(--s2); font-family: var(--font-mono);
+      font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red);
+    }
+    .mag-tile {
+      display: block; width: 100%; text-align: left;
+      border: 1px solid var(--steel-light); background: #1a1816;
+      color: #f5f2eb; padding: 0.55rem 0.65rem; margin: 0 0 0.45rem;
+      font-family: var(--font-sans); font-size: 0.8rem; cursor: grab;
+      touch-action: none; user-select: none;
+    }
+    .mag-tile:active { cursor: grabbing; }
+    .mag-tile a {
+      display: block; margin-top: 0.25rem;
+      font-family: var(--font-mono); font-size: 0.6rem;
+      color: var(--red); border: none; letter-spacing: 0.04em;
+    }
+    .mag-tile.dragging { opacity: 0.55; outline: 2px solid var(--red); }
+    .col-bin.drag-over { border-color: var(--red); background: #1a0808; }
+    /* Round 3 */
+    .animals {
+      display: grid; gap: var(--s3);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px) {
+      .animals { grid-template-columns: repeat(3, 1fr); }
+    }
+    .animal {
+      border: 1px solid var(--border); padding: var(--s3);
+      min-height: 14rem; position: relative; background: var(--grey-1);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .animal.drag-over { border-color: var(--red); transform: scale(1.02); }
+    .animal .face {
+      font-size: 2.5rem; line-height: 1; margin-bottom: var(--s2);
+      animation: bounce 2.4s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .animal .face { animation: none; }
+    }
+    .animal h4 {
+      margin: 0 0 var(--s2); font-size: 0.85rem; color: var(--fg-strong);
+    }
+    .animal .fed { min-height: 4rem; }
+    .triage-pool {
+      margin-top: var(--s3); border: 1px solid var(--border);
+      padding: var(--s2); min-height: 5rem;
+    }
+    /* Report */
+    .report-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: var(--s3) 0; }
+    #svgPreview {
+      width: 100%; border: 1px solid var(--border); background: #0A0A0A;
+      min-height: 200px; overflow: auto;
+    }
+    .board {
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
+    }
+    .board ol { margin: 0.5rem 0 0; padding-left: 1.25rem; }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a class="chip chip--brand" href="../../">Effective <span>Agents</span></a>
+      <div class="nav-cluster nav-cluster--links">
+        <a class="chip" href="../../">Manifesto</a>
+        <a class="chip" href="../../blog/">Blog</a>
+        <a class="chip" href="../../explore/">Explore</a>
+        <a class="chip" href="../">Game</a>
+        <a class="chip chip--active" href="./">Game V2</a>
+      </div>
+      <div class="nav-cluster">
+        <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-grid-toggle>Grid</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero page">
+    <div class="col framed">
+      <span class="crop-bl" aria-hidden="true"></span>
+      <span class="crop-br" aria-hidden="true"></span>
+      <p class="label">Game · V2</p>
+      <h1>Roadmap <em>triage</em> arcade.</h1>
+      <p class="tagline">Ship Outcomes, Not Chat</p>
+      <p class="lede">Three rounds on the filtered M365 AI roadmap: shoot what you do not want, sort what remains, feed the animals, export an SVG report.</p>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="col">
+      <div class="hud" aria-live="polite">
+        <span>Round <strong id="hudRound">0</strong>/3</span>
+        <span>Score <strong id="hudScore">0</strong></span>
+        <span>Combo <strong id="hudCombo">0</strong></span>
+        <span>Time <strong id="hudTime">0.0</strong>s</span>
+        <span class="spacer"></span>
+        <button type="button" class="chip chip--ghost chip--toggle" id="soundToggle">Sound off</button>
+      </div>
+
+      <section class="round-panel is-active splash" id="panel0">
+        <img src="../../assets/img/game-v2-splash.png" alt="" width="1200" height="675" onerror="this.style.display='none'" />
+        <p>Load the filtered roadmap, then play. Keyboard + touch. Humour only — not Microsoft advice. AI-assisted site; verify; no recommendations without human review.</p>
+        <p style="margin-top:var(--s3)">
+          <button type="button" class="chip chip--active" id="btnStart">Start Round 1 — Invaders</button>
+          <a class="chip chip--ghost" href="../">V1: Agent Ops 1987</a>
+        </p>
+      </section>
+
+      <section class="round-panel" id="panel1" aria-label="Round 1 Invaders">
+        <h2>Round 1 — Invaders</h2>
+        <p>Shoot features you are <strong>not</strong> interested in. Survivors continue. ← → or drag to move · Space / tap to fire.</p>
+        <div id="invaders"><canvas id="cv" width="800" height="480"></canvas></div>
+        <p class="r1-help" id="r1Status">Loading…</p>
+        <p style="margin-top:var(--s3)">
+          <button type="button" class="chip chip--active" id="btnR1Done" disabled>Continue with survivors →</button>
+        </p>
+      </section>
+
+      <section class="round-panel" id="panel2" aria-label="Round 2 Magnetic poetry">
+        <h2>Round 2 — Magnetic poetry</h2>
+        <p>Drag tiles into columns. Each tile links to the Microsoft roadmap URL.</p>
+        <div class="poetry">
+          <div>
+            <h3 style="margin-top:0;font-size:0.85rem;">Pool</h3>
+            <div class="pool" id="pool" data-bin="pool"></div>
+          </div>
+          <div class="cols">
+            <div class="col-bin" id="colNow" data-bin="now"><h4>Do now</h4></div>
+            <div class="col-bin" id="colLater" data-bin="later"><h4>Park for later</h4></div>
+          </div>
+        </div>
+        <p style="margin-top:var(--s3)">
+          <button type="button" class="chip chip--active" id="btnR2Done">Continue to animal triage →</button>
+        </p>
+      </section>
+
+      <section class="round-panel" id="panel3" aria-label="Round 3 Animal triage">
+        <h2>Round 3 — Animal triage</h2>
+        <p>Feed each remaining tile to an animal. Then export your SVG report.</p>
+        <div class="animals">
+          <div class="animal" data-bucket="comms" id="anComms">
+            <div class="face" aria-hidden="true">🦜</div>
+            <h4>Needs Communication</h4>
+            <div class="fed" id="fedComms"></div>
+          </div>
+          <div class="animal" data-bucket="change" id="anChange">
+            <div class="face" aria-hidden="true">🦊</div>
+            <h4>Needs Change Management</h4>
+            <div class="fed" id="fedChange"></div>
+          </div>
+          <div class="animal" data-bucket="review" id="anReview">
+            <div class="face" aria-hidden="true">🦉</div>
+            <h4>Needs Review</h4>
+            <div class="fed" id="fedReview"></div>
+          </div>
+        </div>
+        <div class="triage-pool" id="triagePool" data-bin="triage"></div>
+        <div class="report-actions">
+          <button type="button" class="chip chip--active" id="btnExport" disabled>Export SVG report</button>
+          <button type="button" class="chip chip--ghost" id="btnShare" disabled>Share end card</button>
+          <button type="button" class="chip chip--ghost" id="btnRestart">Play again</button>
+        </div>
+        <div id="svgPreview" hidden></div>
+        <div class="board" id="leaderboard"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="inner">
+      <div class="foot-marks"><span class="mark-l">EA</span><span>EA</span></div>
+      <div class="foot-chips">
+        <a class="foot-chip" href="../../">Manifesto</a>
+        <a class="foot-chip" href="../../blog/">Blog</a>
+        <a class="foot-chip" href="../../explore/">Explore</a>
+        <a class="foot-chip" href="../">Game</a>
+        <a class="foot-chip" href="./">Game V2</a>
+        <a class="foot-chip" href="../../legal/">Legal</a>
+        <a class="foot-chip" href="../../legal/#cookies">Cookies</a>
+        <a class="foot-chip" href="../../legal/#tip">Tip</a>
+      </div>
+      <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.</p>
+    </div>
+  </footer>
+
+  <script src="../../assets/js/site-config.js"></script>
+  <script src="../../assets/js/site.js"></script>
+  <script src="../../assets/js/ambient.js"></script>
+  <script src="./game-v2.js"></script>
+</body>
+</html>

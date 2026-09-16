@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Game — Effective Agents</title>
-  <meta name="description" content="Vintage retro turn-by-turn humorous game on the filtered Microsoft 365 AI and agent roadmap." />
+  <meta name="description" content="Agent Ops 1987 — vintage turn-by-turn humorous game on the filtered Microsoft 365 AI and agent roadmap." />
   <meta name="theme-color" content="#0A0A0A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,6 +21,16 @@
       96% { opacity: 0.88; }
       97% { opacity: 1; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      .crt-flicker { animation: none; }
+    }
+    .game-v2-cta {
+      margin: var(--s3) 0 var(--s4);
+      padding: var(--s3);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--red);
+    }
+    .game-v2-cta p { margin: 0 0 var(--s2); color: var(--muted); font-size: 0.95em; }
   </style>
 </head>
 <body>
@@ -32,10 +42,12 @@
         <a class="chip" href="../blog/">Blog</a>
         <a class="chip" href="../explore/">Explore</a>
         <a class="chip chip--active" href="./">Game</a>
+        <a class="chip" href="./v2/">Game V2</a>
       </div>
       <div class="nav-cluster">
         <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-grid-toggle>Grid</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
       </div>
@@ -46,7 +58,7 @@
     <div class="col framed">
       <span class="crop-bl" aria-hidden="true"></span>
       <span class="crop-br" aria-hidden="true"></span>
-      <p class="label">Game</p>
+      <p class="label">Game · V1</p>
       <h1>Agent Ops <em>1987</em></h1>
       <p class="tagline">Ship Outcomes, Not Chat</p>
       <p class="lede">A turn-by-turn text adventure for CoE leads who have seen one too many demos. Same filtered roadmap. Worse coffee. Better decisions (maybe).</p>
@@ -55,18 +67,22 @@
 
   <main class="page">
     <div class="col">
+      <div class="game-v2-cta">
+        <p><strong style="color:var(--fg-strong)">New:</strong> three-round arcade triage — invaders, magnetic poetry, animal triage — with SVG export.</p>
+        <a class="chip chip--active" href="./v2/">Play Game V2 →</a>
+      </div>
       <div class="game-stats" id="stats" aria-live="polite">
         <span>Turn <strong id="turn">0</strong></span>
         <span>Outcomes <strong id="outcomes">0</strong></span>
         <span>Chat debt <strong id="chat">0</strong></span>
         <span>Governance <strong id="gov">50</strong></span>
       </div>
-      <div class="game-stage crt-flicker" id="stage" role="log" aria-live="polite">
-        <div class="game-log" id="log">Loading roadmap ROM…</div>
-        <div class="game-choices" id="choices"></div>
+      <div class="game-stage crt-flicker" id="stage">
+        <div class="game-log" id="log" role="log" aria-live="polite">Loading roadmap ROM…</div>
+        <div class="game-choices" id="choices" aria-label="Choices"></div>
       </div>
       <p style="margin-top:1.25rem;font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.06em;">
-        Humour only. Roadmap titles are real; dialogue is satire. Not affiliated with Microsoft.
+        Humour only. Roadmap titles are real; dialogue is satire. Not affiliated with Microsoft. AI-assisted content — verify; no recommendations without human review.
       </p>
     </div>
   </main>
@@ -79,17 +95,24 @@
         <a class="foot-chip" href="../blog/">Blog</a>
         <a class="foot-chip" href="../explore/">Explore</a>
         <a class="foot-chip" href="./">Game</a>
+        <a class="foot-chip" href="./v2/">Game V2</a>
+        <a class="foot-chip" href="../legal/">Legal</a>
+        <a class="foot-chip" href="../legal/#cookies">Cookies</a>
+        <a class="foot-chip" href="../legal/#tip">Tip</a>
         <a class="foot-chip" href="../llms.txt">llms.txt</a>
-        <a class="foot-chip" href="../manifesto.md">manifesto.md</a>
       </div>
       <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.</p>
     </div>
   </footer>
 
+  <script src="../assets/js/site-config.js"></script>
   <script src="../assets/js/site.js"></script>
   <script src="../assets/js/ambient.js"></script>
   <script>
 (function () {
+  const strip = (s) => (window.EASite && EASite.stripHtml ? EASite.stripHtml(s) : String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+  const esc = (s) => (window.EASite && EASite.escapeHtml ? EASite.escapeHtml(s) : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+
   const state = {
     turn: 0,
     outcomes: 0,
@@ -98,6 +121,7 @@
     deck: [],
     idx: 0,
     over: false,
+    _source: [],
   };
 
   const logEl = document.getElementById('log');
@@ -111,6 +135,7 @@
   }
 
   function typeLines(text) {
+    // Only allow our intentional span.prompt — everything else must be escaped by callers
     logEl.innerHTML = text;
   }
 
@@ -151,13 +176,14 @@
           ? 'CHAT THEATRE APPRENTICE'
           : 'COE SURVIVOR';
     typeLines(
-      `<span class="prompt">&gt;</span> SYSTEM HALT\n\n${reason}\n\n` +
+      `<span class="prompt">&gt;</span> SYSTEM HALT\n\n${esc(reason)}\n\n` +
         `Outcomes shipped: ${state.outcomes}\nChat debt accrued: ${state.chat}\nGovernance: ${state.gov}\n\n` +
         `Rank: ${rank}\n\nShip Outcomes, Not Chat.`
     );
-    choicesEl.innerHTML = '';
+    choicesEl.replaceChildren();
     const again = document.createElement('button');
     again.className = 'game-choice';
+    again.type = 'button';
     again.textContent = 'A) Insert another coin (restart)';
     again.addEventListener('click', start);
     choicesEl.appendChild(again);
@@ -186,12 +212,15 @@
     state.turn += 1;
     syncStats();
 
+    const desc = strip(item.description || '');
+    const brief = desc.slice(0, 220) + (desc.length > 220 ? '…' : '');
+
     const body =
       `<span class="prompt">&gt;</span> TURN ${state.turn} — ROADMAP INCOMING\n\n` +
-      `TITLE: ${item.title}\n` +
-      `ID: ${item.id}\n\n` +
-      `${flavour(item)}\n\n` +
-      `Briefing: ${(item.description || '').slice(0, 220)}${(item.description || '').length > 220 ? '…' : ''}\n\n` +
+      `TITLE: ${esc(strip(item.title))}\n` +
+      `ID: ${esc(String(item.id))}\n\n` +
+      `${esc(flavour(item))}\n\n` +
+      `Briefing: ${esc(brief)}\n\n` +
       `What do you do, operator?`;
 
     typeLines(body);
@@ -233,7 +262,7 @@
       },
     ];
 
-    choicesEl.innerHTML = '';
+    choicesEl.replaceChildren();
     choices.forEach((c) => {
       const btn = document.createElement('button');
       btn.className = 'game-choice';
@@ -243,10 +272,11 @@
         const note = c.apply();
         syncStats();
         state.idx += 1;
-        typeLines(`<span class="prompt">&gt;</span> RESULT\n\n${note}\n\n(press continue)`);
-        choicesEl.innerHTML = '';
+        typeLines(`<span class="prompt">&gt;</span> RESULT\n\n${esc(note)}\n\n(press continue)`);
+        choicesEl.replaceChildren();
         const next = document.createElement('button');
         next.className = 'game-choice';
+        next.type = 'button';
         next.textContent = 'Continue →';
         next.addEventListener('click', present);
         choicesEl.appendChild(next);
@@ -262,19 +292,19 @@
     state.gov = 50;
     state.idx = 0;
     state.over = false;
-    state.deck = shuffle(state.deck.length ? state._source : []).slice(0, 10);
-    if (!state.deck.length && state._source) state.deck = shuffle(state._source).slice(0, 10);
+    state.deck = shuffle(state._source).slice(0, 10);
     syncStats();
     typeLines(
       `<span class="prompt">&gt;</span> AGENT OPS 1987\n\n` +
         `Booting CoE terminal…\nLoading filtered M365 roadmap ROM…\n` +
-        `${(state._source || []).length} AI/agent items online.\n\n` +
+        `${state._source.length} AI/agent items online.\n\n` +
         `Objective: ship outcomes. Avoid chat theatre.\nGovernance starts at 50. Do not let it hit zero.\n\n` +
         `Insert courage to begin.`
     );
-    choicesEl.innerHTML = '';
+    choicesEl.replaceChildren();
     const go = document.createElement('button');
     go.className = 'game-choice';
+    go.type = 'button';
     go.textContent = 'A) Begin shift';
     go.addEventListener('click', () => {
       state.deck = shuffle(state._source).slice(0, 10);
@@ -286,7 +316,11 @@
   fetch('../data/roadmap-ai.json')
     .then((r) => r.json())
     .then((data) => {
-      state._source = data.items || [];
+      state._source = (data.items || []).map((it) => ({
+        ...it,
+        title: strip(it.title),
+        description: strip(it.description),
+      }));
       start();
     })
     .catch(() => {

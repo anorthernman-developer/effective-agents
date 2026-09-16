@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Legal — Effective Agents</title>
+  <meta name="description" content="AI disclosure, cookies, privacy, and tip information for Effective Agents." />
+  <meta name="theme-color" content="#0A0A0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/site.css" />
+  <script src="../assets/js/theme-boot.js"></script>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a class="chip chip--brand" href="../">Effective <span>Agents</span></a>
+      <div class="nav-cluster nav-cluster--links">
+        <a class="chip" href="../">Manifesto</a>
+        <a class="chip" href="../blog/">Blog</a>
+        <a class="chip" href="../explore/">Explore</a>
+        <a class="chip" href="../game/">Game</a>
+        <a class="chip" href="../game/v2/">Game V2</a>
+      </div>
+      <div class="nav-cluster">
+        <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-grid-toggle>Grid</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero page">
+    <div class="col framed">
+      <span class="crop-bl" aria-hidden="true"></span>
+      <span class="crop-br" aria-hidden="true"></span>
+      <p class="label">Legal · EU-minded</p>
+      <h1>Transparency, <em>cookies</em>, and joy.</h1>
+      <p class="tagline">Ship Outcomes, Not Chat</p>
+      <p class="lede">Short notices for AI use, privacy, cookies, and an optional tip. Not legal advice — verify for your jurisdiction.</p>
+      <img class="hero-media" src="../assets/img/legal-accent.png" alt="" width="1200" height="675" loading="lazy" onerror="this.style.display='none'" />
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="col">
+      <section class="legal-block" id="ai">
+        <h2>AI use disclosure</h2>
+        <p>Some content on this site may be <strong>AI-assisted</strong> (for example roadmap summaries, illustrations, or short audio). AI systems can make mistakes, omit context, or invent details.</p>
+        <p><strong>Always verify</strong> against official Microsoft roadmap sources and your own policies. <strong>No recommendations without human review</strong> — nothing here is advice to deploy, buy, or configure systems in production without a qualified human decision.</p>
+      </section>
+
+      <section class="legal-block" id="cookies">
+        <h2>Cookies &amp; local storage</h2>
+        <p>We default to <strong>necessary only</strong>. Theme, plain-text mode, explore pins, game progress, and cookie preference may use <code>localStorage</code> (not third-party cookies).</p>
+        <p><strong>Analytics</strong> stay off until you opt in via the banner. We do not set non-essential cookies before consent. You can change your mind:</p>
+        <p>
+          <button type="button" class="chip chip--ghost" id="resetCookies">Reset cookie preference</button>
+        </p>
+      </section>
+
+      <section class="legal-block" id="privacy">
+        <h2>Privacy (short notice)</h2>
+        <p>This is a static, shareable site. Personalisation for explore/game stays in your browser. We do not sell data. If you contact us, we use your message only to reply.</p>
+        <p>Contact placeholder: <a data-contact-email href="mailto:hello@example.com">hello@example.com</a> — replace via <code>assets/js/site-config.js</code>.</p>
+      </section>
+
+      <section class="legal-block" id="joy">
+        <h2>Made for sharing &amp; joy</h2>
+        <p>Built to share ideas about effective agents — not to monetise attention. Running the site and tooling costs us money. Tips are optional and appreciated; never required.</p>
+      </section>
+
+      <section class="legal-block" id="tip">
+        <h2>Tip</h2>
+        <p>Optional tip button uses <code>TIP_URL</code> in <code>assets/js/site-config.js</code>. Set it to your Buy Me a Coffee, Stripe Payment Link, or similar. Leave empty to keep this instructional section only — we do not invent a fake payment processor.</p>
+        <p>
+          <a class="chip chip--active" data-tip-cta href="#tip">Tip the makers</a>
+        </p>
+        <p style="font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.04em;">
+          Config: window.EA_CONFIG.TIP_URL = 'https://…'
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="inner">
+      <div class="foot-marks"><span class="mark-l">EA</span><span>EA</span></div>
+      <div class="foot-chips">
+        <a class="foot-chip" href="../">Manifesto</a>
+        <a class="foot-chip" href="../blog/">Blog</a>
+        <a class="foot-chip" href="../explore/">Explore</a>
+        <a class="foot-chip" href="../game/">Game</a>
+        <a class="foot-chip" href="../game/v2/">Game V2</a>
+        <a class="foot-chip" href="./">Legal</a>
+        <a class="foot-chip" href="./#cookies">Cookies</a>
+        <a class="foot-chip" href="./#tip">Tip</a>
+        <a class="foot-chip" href="../llms.txt">llms.txt</a>
+      </div>
+      <p class="foot-meta">Ship Outcomes, Not Chat · en-GB · Not affiliated with Microsoft or TypeSafe AI.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/site-config.js"></script>
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/ambient.js"></script>
+  <script>
+    document.getElementById('resetCookies').addEventListener('click', () => {
+      try { localStorage.removeItem('ea-cookie-consent'); } catch (_) {}
+      location.reload();
+    });
+  </script>
+</body>
+</html>

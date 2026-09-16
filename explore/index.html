@@ -108,9 +108,11 @@
         <a class="chip" href="../blog/">Blog</a>
         <a class="chip chip--active" href="./">Explore</a>
         <a class="chip" href="../game/">Game</a>
+        <a class="chip" href="../game/v2/">Game V2</a>
       </div>
       <div class="nav-cluster">
         <button type="button" class="chip chip--ghost chip--toggle" data-theme-toggle>Light</button>
+        <button type="button" class="chip chip--ghost chip--toggle" data-grid-toggle>Grid</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-plain-toggle>Plain</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-ambient-start>Ambient</button>
         <button type="button" class="chip chip--ghost chip--toggle" data-ambient-mute>Mute</button>
@@ -125,6 +127,7 @@
       <p class="label">Explore</p>
       <h1>Installation of the <em>filtered</em> roadmap.</h1>
       <p class="tagline">Ship Outcomes, Not Chat</p>
+      <img class="hero-media" src="../assets/img/explore-hero.png" alt="" width="1200" height="675" loading="lazy" onerror="this.style.display='none'" />
       <p class="lede">Pin what matters. Hide the noise. Personalisation stays in your browser (localStorage) — no account, no telemetry.</p>
     </div>
   </header>
@@ -159,6 +162,10 @@
         <a class="foot-chip" href="../blog/">Blog</a>
         <a class="foot-chip" href="./">Explore</a>
         <a class="foot-chip" href="../game/">Game</a>
+        <a class="foot-chip" href="../game/v2/">Game V2</a>
+        <a class="foot-chip" href="../legal/">Legal</a>
+        <a class="foot-chip" href="../legal/#cookies">Cookies</a>
+        <a class="foot-chip" href="../legal/#tip">Tip</a>
         <a class="foot-chip" href="../llms.txt">llms.txt</a>
         <a class="foot-chip" href="../manifesto.md">manifesto.md</a>
       </div>
@@ -166,6 +173,7 @@
     </div>
   </footer>
 
+  <script src="../assets/js/site-config.js"></script>
   <script src="../assets/js/site.js"></script>
   <script src="../assets/js/ambient.js"></script>
   <script>
@@ -264,11 +272,15 @@
       tile.className = 'tile' + (pins.has(it.id) ? ' pinned' : '');
       tile.style.animationDelay = (i % 8) * 0.04 + 's';
       const date = (it.pubDate || '').slice(5, 16);
+      const strip = (s) => (window.EASite && EASite.stripHtml ? EASite.stripHtml(s) : String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+      const esc = (s) => (window.EASite && EASite.escapeHtml ? EASite.escapeHtml(s) : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+      const title = strip(it.title);
+      const desc = strip(it.description || '');
       tile.innerHTML = `
-        <button type="button" class="pin-btn${pins.has(it.id) ? ' pinned' : ''}" data-id="${it.id}" aria-label="Pin">${pins.has(it.id) ? 'Pinned' : 'Pin'}</button>
-        <p class="t-meta">${date} · ${it.tags.slice(0, 2).join(' · ')}</p>
-        <h3><a class="title-link" href="${it.link}" rel="noopener" target="_blank">${it.title.replace(/</g, '&lt;')}</a></h3>
-        <p>${(it.description || '').slice(0, 160).replace(/</g, '&lt;')}${(it.description || '').length > 160 ? '…' : ''}</p>
+        <button type="button" class="pin-btn${pins.has(it.id) ? ' pinned' : ''}" data-id="${esc(String(it.id))}" aria-label="Pin">${pins.has(it.id) ? 'Pinned' : 'Pin'}</button>
+        <p class="t-meta">${esc(date)} · ${esc(it.tags.slice(0, 2).join(' · '))}</p>
+        <h3><a class="title-link" href="${esc(it.link || '#')}" rel="noopener" target="_blank">${esc(title)}</a></h3>
+        <p>${esc(desc.slice(0, 160))}${desc.length > 160 ? '…' : ''}</p>
       `;
       wall.appendChild(tile);
     });
@@ -295,7 +307,10 @@
   fetch('../data/roadmap-ai.json')
     .then((r) => r.json())
     .then((data) => {
-      items = data.items || [];
+      items = (data.items || []).map((it) => {
+        const strip = (s) => (window.EASite && EASite.stripHtml ? EASite.stripHtml(s) : String(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+        return { ...it, title: strip(it.title), description: strip(it.description) };
+      });
       render();
     })
     .catch(() => {
